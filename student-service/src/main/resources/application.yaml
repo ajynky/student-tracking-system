@@ -1,0 +1,20 @@
+spring:
+  application:
+    name: student-service
+  datasource:
+    url: jdbc:postgresql://db.taevafrvhdlcjulzbxnw.supabase.co:5432/postgres
+    username: postgres
+    password: Ajynkya@7408
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: none
+    show-sql: true
+#    properties:
+#      hibernate:
+#        dialect: org.hibernate.dialect.PostgreSQLDialect
+sentry:
+  dsn: https://e9f8dcf0a70a577dccabab52236a0f8b@o4511279635955712.ingest.de.sentry.io/4511279755558992
+  traces-sample-rate: 1.0
+server:
+  port: 9095
