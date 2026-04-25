@@ -7,18 +7,23 @@ spring:
     password: Ajynkya@7408
     driver-class-name: org.postgresql.Driver
   jpa:
+    open-in-view: false
     hibernate:
       ddl-auto: none
     show-sql: true
-#    properties:
+#    propertiees:
 #      hibernate:
 #        dialect: org.hibernate.dialect.PostgreSQLDialect
 sentry:
   dsn: https://8600e8ba033c878635dc1108fd2ce098@o4511279635955712.ingest.de.sentry.io/4511279748612176
   traces-sample-rate: 1.0
-
 server:
   port: 9093
+
 jwt:
   secret: your-super-secret-key-minimum-32-characters-long
   expiration: 86400000
+
+
+#    url: jdbc:postgresql://aws-1-ap-southeast-2.pooler.supabase.com:6543/postgres
+#    username: postgres.taevafrvhdlcjulzbxnw
