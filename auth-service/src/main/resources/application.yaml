@@ -19,3 +19,6 @@ sentry:
 
 server:
   port: 9093
+jwt:
+  secret: your-super-secret-key-minimum-32-characters-long
+  expiration: 86400000
