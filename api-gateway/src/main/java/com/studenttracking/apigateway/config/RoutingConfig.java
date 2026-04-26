@@ -37,6 +37,11 @@ public class RoutingConfig {
                     java.net.URI.create(studentServiceUrl +
                         request.uri().getPath())).build())
 
+            .andRoute(RequestPredicates.path("/classes/**"),
+                    request -> ServerResponse.temporaryRedirect(
+                            java.net.URI.create(studentServiceUrl +
+                                    request.uri().getPath())).build())
+
             .andRoute(RequestPredicates.path("/attendance/**"),
                 request -> ServerResponse.temporaryRedirect(
                     java.net.URI.create(attendanceServiceUrl +
