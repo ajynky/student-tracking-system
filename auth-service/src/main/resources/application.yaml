@@ -11,9 +11,9 @@ spring:
     hibernate:
       ddl-auto: none
     show-sql: true
-#    propertiees:
-#      hibernate:
-#        dialect: org.hibernate.dialect.PostgreSQLDialect
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
 sentry:
   dsn: https://8600e8ba033c878635dc1108fd2ce098@o4511279635955712.ingest.de.sentry.io/4511279748612176
   traces-sample-rate: 1.0
