@@ -26,6 +26,8 @@ public class SecurityConfig {
             .cors(cors -> cors.configurationSource(request -> {
                 CorsConfiguration config = new CorsConfiguration();
                 config.addAllowedOrigin("http://localhost:3000");
+                config.addAllowedOrigin("https://student-tracking-system-omega.vercel.app");
+                config.addAllowedOriginPattern("https://*.vercel.app");
                 config.addAllowedMethod("*");
                 config.addAllowedHeader("*");
                 config.setAllowCredentials(true);
