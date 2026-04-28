@@ -1,0 +1,75 @@
+version: '3.8'
+
+services:
+  api-gateway:
+    build: ./api-gateway
+    ports:
+      - "9091:9091"
+    environment:
+      - SERVICES_AUTH_SERVICE=http://auth-service:9093
+      - SERVICES_STUDENT_SERVICE=http://student-service:9095
+      - SERVICES_ATTENDANCE_SERVICE=http://attendance-service:9092
+      - SERVICES_NOTIFICATION_SERVICE=http://notification-service:9094
+      - JWT_SECRET=your-super-secret-key-minimum-32-characters-long
+      - SENTRY_ENABLED=false
+    depends_on:
+      - auth-service
+      - student-service
+      - attendance-service
+      - notification-service
+
+  auth-service:
+    build: ./auth-service
+    ports:
+      - "9093:9093"
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://aws-1-ap-southeast-2.pooler.supabase.com:6543/postgres
+      - SPRING_DATASOURCE_USERNAME=postgres.taevafrvhdlcjulzbxnw
+      - SPRING_DATASOURCE_PASSWORD=Ajynkya@7408
+      - JWT_SECRET=your-super-secret-key-minimum-32-characters-long
+      - JWT_EXPIRATION=86400000
+      - SENTRY_DSN=YOUR_AUTH_SENTRY_DSN
+      - SENTRY_ENABLED=false
+  student-service:
+    build: ./student-service
+    ports:
+      - "9095:9095"
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://aws-1-ap-southeast-2.pooler.supabase.com:6543/postgres
+      - SPRING_DATASOURCE_USERNAME=postgres.taevafrvhdlcjulzbxnw
+      - SPRING_DATASOURCE_PASSWORD=Ajynkya@7408
+      - JWT_SECRET=your-super-secret-key-minimum-32-characters-long
+      - SERVICES_NOTIFICATION_SERVICE=http://notification-service:9094
+      - SUPABASE_URL=https://taevafrvhdlcjulzbxnw.supabase.co
+      - SUPABASE_SERVICE_ROLE_KEY=YOUR_SERVICE_ROLE_KEY
+      - SENTRY_DSN=YOUR_STUDENT_SENTRY_DSN
+      - SENTRY_ENABLED=false
+
+  attendance-service:
+    build: ./attendance-service
+    ports:
+      - "9092:9092"
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://aws-1-ap-southeast-2.pooler.supabase.com:6543/postgres
+      - SPRING_DATASOURCE_USERNAME=postgres.taevafrvhdlcjulzbxnw
+      - SPRING_DATASOURCE_PASSWORD=Ajynkya@7408
+      - JWT_SECRET=your-super-secret-key-minimum-32-characters-long
+      - SERVICES_NOTIFICATION_SERVICE=http://notification-service:9094
+      - SENTRY_DSN=YOUR_ATTENDANCE_SENTRY_DSN
+      - SENTRY_ENABLED=false
+
+  notification-service:
+    build: ./notification-service
+    ports:
+      - "9094:9094"
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://aws-1-ap-southeast-2.pooler.supabase.com:6543/postgres
+      - SPRING_DATASOURCE_USERNAME=postgres.taevafrvhdlcjulzbxnw
+      - SPRING_DATASOURCE_PASSWORD=Ajynkya@7408
+      - RESEND_API_KEY=YOUR_RESEND_API_KEY
+      - RESEND_FROM_EMAIL=onboarding@resend.dev
+      - TWILIO_ACCOUNT_SID=YOUR_TWILIO_SID
+      - TWILIO_AUTH_TOKEN=YOUR_TWILIO_TOKEN
+      - TWILIO_FROM_NUMBER=+18142472337
+      - SENTRY_DSN=YOUR_NOTIFICATION_SENTRY_DSN
+      - SENTRY_ENABLED=false

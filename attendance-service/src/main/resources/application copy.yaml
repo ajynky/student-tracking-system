@@ -1,0 +1,23 @@
+spring:
+  application:
+    name: attendance-service
+  datasource:
+    url: jdbc:postgresql://db.taevafrvhdlcjulzbxnw.supabase.co:5432/postgres
+    username: postgres
+    password: Ajynkya@7408
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: none
+    show-sql: true
+    open-in-view: false
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+sentry:
+  dsn: https://bfab2b7de3f29fd06a243c090749ece8@o4511279635955712.ingest.de.sentry.io/4511279753199696
+  traces-sample-rate: 1.0
+jwt:
+  secret: your-super-secret-key-minimum-32-characters-long
+server:
+  port: 9092
+services:
+  notification-service: http://localhost:9094

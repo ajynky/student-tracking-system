@@ -1,0 +1,37 @@
+spring:
+  application:
+    name: student-service
+  data:
+    web:
+      pageable:
+        default-page-size: 10
+        max-page-size: 50
+  datasource:
+    url: jdbc:postgresql://db.taevafrvhdlcjulzbxnw.supabase.co:5432/postgres
+    username: postgres
+    password: Ajynkya@7408
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: none
+    show-sql: true
+  servlet:
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 10MB
+jwt:
+  secret: your-super-secret-key-minimum-32-characters-long
+#    properties:
+#      hibernate:
+#        dialect: org.hibernate.dialect.PostgreSQLDialect
+sentry:
+  dsn: https://e9f8dcf0a70a577dccabab52236a0f8b@o4511279635955712.ingest.de.sentry.io/4511279755558992
+  traces-sample-rate: 1.0
+server:
+  port: 9095
+
+supabase:
+  url: https://taevafrvhdlcjulzbxnw.supabase.co
+  service-role-key: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRhZXZhZnJ2aGRsY2p1bHpieG53Iiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc3NzA5MzM1NywiZXhwIjoyMDkyNjY5MzU3fQ.qpS_PrIJ_e0Qn0ZF-QNEOoyM5v6d95DIajuITeod7Q4
+  storage:
+    bucket: assignments
