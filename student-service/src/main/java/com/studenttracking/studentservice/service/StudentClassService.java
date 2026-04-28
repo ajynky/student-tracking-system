@@ -4,6 +4,8 @@ import com.studenttracking.studentservice.dto.StudentClassRequest;
 import com.studenttracking.studentservice.entity.StudentClass;
 import com.studenttracking.studentservice.repository.StudentClassRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -23,8 +25,8 @@ public class StudentClassService {
         return classRepository.save(studentClass);
     }
 
-    public List<StudentClass> getAllClasses() {
-        return classRepository.findAll();
+    public Page<StudentClass> getAllClasses(Pageable pageable) {
+        return classRepository.findAll(pageable);
     }
 
     public StudentClass getClassById(UUID id) {

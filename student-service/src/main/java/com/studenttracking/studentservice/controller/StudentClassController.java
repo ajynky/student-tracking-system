@@ -5,6 +5,9 @@ import com.studenttracking.studentservice.entity.StudentClass;
 import com.studenttracking.studentservice.service.StudentClassService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -25,8 +28,8 @@ public class StudentClassController {
     }
 
     @GetMapping
-    public ResponseEntity<List<StudentClass>> getAllClasses() {
-        return ResponseEntity.ok(classService.getAllClasses());
+    public ResponseEntity<Page<StudentClass>> getAllClasses(@PageableDefault(size = 10, sort = "name") Pageable pageable) {
+        return ResponseEntity.ok(classService.getAllClasses(pageable));
     }
 
     @GetMapping("/{id}")

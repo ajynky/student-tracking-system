@@ -30,17 +30,18 @@ public class JwtAuthFilter extends OncePerRequestFilter {
             throws ServletException, IOException {
 
         String path = request.getRequestURI();
+        System.out.println("JWT Filter triggered for path: " + path);
+        System.out.println("Auth header: " + request.getHeader("Authorization"));
 
-        // Allow auth endpoints without token
         if (path.startsWith("/auth/")) {
             filterChain.doFilter(request, response);
             return;
         }
 
-        // Get Authorization header
         String authHeader = request.getHeader("Authorization");
 
         if (authHeader == null || !authHeader.startsWith("Bearer ")) {
+            System.out.println("Missing or invalid auth header");
             response.setStatus(HttpStatus.UNAUTHORIZED.value());
             response.setContentType("application/json");
             response.getWriter().write(
@@ -49,10 +50,12 @@ public class JwtAuthFilter extends OncePerRequestFilter {
             return;
         }
 
-        // Extract token
         String token = authHeader.substring(7);
+        System.out.println("Token extracted: " + token.substring(0, 20) + "...");
+        System.out.println("Token valid: " + jwtUtil.isTokenValid(token));
 
         if (!jwtUtil.isTokenValid(token)) {
+            System.out.println("Token validation failed");
             response.setStatus(HttpStatus.UNAUTHORIZED.value());
             response.setContentType("application/json");
             response.getWriter().write(
@@ -61,11 +64,10 @@ public class JwtAuthFilter extends OncePerRequestFilter {
             return;
         }
 
-        // Extract user info from token
         String email = jwtUtil.extractEmail(token);
         String role = jwtUtil.extractRole(token);
+        System.out.println("Email: " + email + " Role: " + role);
 
-        // ✅ Set authentication in Spring Security context
         UsernamePasswordAuthenticationToken authentication =
                 new UsernamePasswordAuthenticationToken(
                         email,
@@ -73,13 +75,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
                         List.of(new SimpleGrantedAuthority("ROLE_" + role))
                 );
 
-        SecurityContextHolder.getContext()
-                .setAuthentication(authentication);
-
-        // Add user info to headers for downstream services
-        request.setAttribute("X-User-Email", email);
-        request.setAttribute("X-User-Role", role);
-
+        SecurityContextHolder.getContext().setAuthentication(authentication);
         filterChain.doFilter(request, response);
     }
 }
