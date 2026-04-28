@@ -1,0 +1,27 @@
+spring:
+  application:
+    name: api-gateway
+  datasource:
+    url: jdbc:postgresql://db.taevafrvhdlcjulzbxnw.supabase.co:5432/postgres
+    username: postgres
+    password: Ajynkya@7408
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: none
+    show-sql: true
+jwt:
+  secret: your-super-secret-key-minimum-32-characters-long
+#    properties:
+#      hibernate:
+#        dialect: org.hibernate.dialect.PostgreSQLDialect
+sentry:
+  dsn: https://54205836f14e77e7208fe3534ae3845e@o4511279635955712.ingest.de.sentry.io/4511279744548944
+  traces-sample-rate: 1.0
+server:
+  port: 9091
+services:
+  auth-service: http://localhost:9093
+  student-service: http://localhost:9095
+  attendance-service: http://localhost:9092
+  notification-service: http://localhost:9094
