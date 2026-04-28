@@ -1,10 +1,5 @@
 package com.studenttracking.notificationservice.service;
 
-import java.time.LocalDateTime;
-
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Service;
-
 import com.resend.Resend;
 import com.resend.core.exception.ResendException;
 import com.resend.services.emails.model.CreateEmailOptions;
@@ -14,9 +9,12 @@ import com.studenttracking.notificationservice.entity.Notification;
 import com.studenttracking.notificationservice.enums.NotificationStatus;
 import com.studenttracking.notificationservice.enums.NotificationType;
 import com.studenttracking.notificationservice.repository.NotificationRepository;
-
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
+
+import java.time.LocalDateTime;
 
 @Service
 @RequiredArgsConstructor

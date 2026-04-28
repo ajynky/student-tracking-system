@@ -1,10 +1,5 @@
 package com.studenttracking.notificationservice.service;
 
-import java.time.LocalDateTime;
-
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Service;
-
 import com.studenttracking.notificationservice.dto.SmsRequest;
 import com.studenttracking.notificationservice.entity.Notification;
 import com.studenttracking.notificationservice.enums.NotificationStatus;
@@ -13,10 +8,13 @@ import com.studenttracking.notificationservice.repository.NotificationRepository
 import com.twilio.Twilio;
 import com.twilio.rest.api.v2010.account.Message;
 import com.twilio.type.PhoneNumber;
-
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
+
+import java.time.LocalDateTime;
 
 @Service
 @RequiredArgsConstructor

@@ -1,22 +1,16 @@
 package com.studenttracking.attendanceservice.service;
 
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
-
-import org.springframework.stereotype.Service;
-
 import com.studenttracking.attendanceservice.client.NotificationClient;
 import com.studenttracking.attendanceservice.dto.AttendanceRequest;
 import com.studenttracking.attendanceservice.dto.BulkAttendanceRequest;
 import com.studenttracking.attendanceservice.entity.Attendance;
 import com.studenttracking.attendanceservice.enums.AttendanceStatus;
 import com.studenttracking.attendanceservice.repository.AttendanceRepository;
-
 import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+
+import java.time.LocalDate;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor

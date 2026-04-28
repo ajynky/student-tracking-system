@@ -1,10 +1,10 @@
 package com.studenttracking.attendanceservice.dto;
 
-import java.time.LocalDate;
-import java.util.UUID;
-
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
+
+import java.time.LocalDate;
+import java.util.UUID;
 
 @Data
 public class AttendanceRequest {
