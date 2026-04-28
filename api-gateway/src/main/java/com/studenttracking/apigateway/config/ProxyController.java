@@ -1,15 +1,25 @@
 package com.studenttracking.apigateway.config;
 
-import jakarta.servlet.http.HttpServletRequest;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.*;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.client.RestTemplate;
-
 import java.net.URI;
 import java.util.Collections;
 import java.util.Enumeration;
+
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.client.HttpClientErrorException;
+import org.springframework.web.client.HttpServerErrorException;
+import org.springframework.web.client.RestTemplate;
+
+import jakarta.servlet.http.HttpServletRequest;
+import lombok.extern.slf4j.Slf4j;
 
 @RestController
 @Slf4j
@@ -92,6 +102,14 @@ public class ProxyController {
             HttpServletRequest request) {
         return proxy(notificationServiceUrl, body, method, request);
     }
+    
+    @RequestMapping("/users/**")
+    public ResponseEntity<String> proxyUsers(
+            @RequestBody(required = false) String body,
+            HttpMethod method,
+            HttpServletRequest request) {
+        return proxy(authServiceUrl, body, method, request);
+    }
 
     private ResponseEntity<String> proxy(
             String serviceUrl,
@@ -126,6 +144,16 @@ public class ProxyController {
                 entity,
                 String.class
             );
+        } catch (HttpClientErrorException e) {
+            log.error("Client error: {}", e.getMessage());
+            return ResponseEntity
+                .status(e.getStatusCode())
+                .body(e.getResponseBodyAsString());
+        } catch (HttpServerErrorException e) {
+            log.error("Server error: {}", e.getMessage());
+            return ResponseEntity
+                .status(e.getStatusCode())
+                .body(e.getResponseBodyAsString());
         } catch (Exception e) {
             log.error("Proxy error: {}", e.getMessage());
             return ResponseEntity.status(HttpStatus.BAD_GATEWAY)

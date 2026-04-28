@@ -18,13 +18,26 @@ export default function LoginPage() {
 
         try {
             const response = await api.post('/auth/login', { email, password });
-            const { token, role } = response.data;
+            const { token, role, email: userEmail, userId } = response.data;
 
-            // Store token and role in cookies
             document.cookie = `token=${token}; path=/; max-age=86400`;
             document.cookie = `role=${role}; path=/; max-age=86400`;
+            document.cookie = `email=${userEmail}; path=/; max-age=86400`;
+            document.cookie = `userId=${userId}; path=/; max-age=86400`;
 
-            // Redirect based on role
+            // If student fetch studentId
+            if (role === 'STUDENT') {
+                try {
+                    const studentResponse = await api.get(
+                        `/students/user/${userId}`,
+                        { headers: { Authorization: `Bearer ${token}` } }
+                    );
+                    document.cookie = `studentId=${studentResponse.data.id}; path=/; max-age=86400`;
+                } catch (err) {
+                    console.log('Could not fetch student ID');
+                }
+            }
+
             if (role === 'ADMIN') {
                 router.push('/admin');
             } else if (role === 'TEACHER') {
