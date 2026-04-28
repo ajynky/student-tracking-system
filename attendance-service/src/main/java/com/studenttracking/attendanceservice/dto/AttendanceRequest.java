@@ -1,10 +1,10 @@
 package com.studenttracking.attendanceservice.dto;
 
-import jakarta.validation.constraints.NotNull;
-import lombok.Data;
-
 import java.time.LocalDate;
 import java.util.UUID;
+
+import jakarta.validation.constraints.NotNull;
+import lombok.Data;
 
 @Data
 public class AttendanceRequest {
@@ -22,4 +22,9 @@ public class AttendanceRequest {
     private String status;
 
     private UUID markedBy;
+
+    // Optional — needed for SMS trigger
+    private String phoneNumber;
+    private String studentName;
+    private UUID userId;        // ← add this
 }
