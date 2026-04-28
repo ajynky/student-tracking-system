@@ -17,7 +17,7 @@ sentry:
   traces-sample-rate: 1.0
 jwt:
   secret: your-super-secret-key-minimum-32-characters-long
-
-
 server:
   port: 9092
+services:
+  notification-service: http://localhost:9094

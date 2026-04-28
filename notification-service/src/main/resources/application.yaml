@@ -11,6 +11,7 @@ spring:
       ddl-auto: none
     show-sql: true
     open-in-view: false
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
 resend:
   api-key: re_j6xmmrB9_82E1M87tcQrfvoQAaEi3uicp
   from-email: onboarding@resend.dev
@@ -22,5 +23,5 @@ server:
   port: 9094
 twilio:
   account-sid: ACee787ec77d2c688c0a1adf3556bd61b3
-  auth-token: 05e7f7e639044265ccd3f92cc37da01f
+  auth-token: 224e65a7d4502f549a219deb529c088d
   from-number: +18142472337

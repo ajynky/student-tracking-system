@@ -1,12 +1,12 @@
 package com.studenttracking.attendanceservice.dto;
 
-import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.NotNull;
-import lombok.Data;
-
 import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
+
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
+import lombok.Data;
 
 @Data
 public class BulkAttendanceRequest {
@@ -29,5 +29,9 @@ public class BulkAttendanceRequest {
 
         @NotNull(message = "Status is required")
         private String status;
+       	
+    	// Optional — needed for SMS trigger
+    	private String phoneNumber;
+    	private String studentName;
     }
 }
