@@ -18,11 +18,12 @@ export default function LoginPage() {
 
         try {
             const response = await api.post('/auth/login', { email, password });
-            const { token, role } = response.data;
+            const { token, role, email: userEmail } = response.data;
 
-            // Store token and role in cookies
+            // Store token, role and email in cookies
             document.cookie = `token=${token}; path=/; max-age=86400`;
             document.cookie = `role=${role}; path=/; max-age=86400`;
+            document.cookie = `email=${userEmail}; path=/; max-age=86400`;
 
             // Redirect based on role
             if (role === 'ADMIN') {
