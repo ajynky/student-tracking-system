@@ -33,10 +33,10 @@ public class JwtAuthFilter extends OncePerRequestFilter {
         System.out.println("JWT Filter triggered for path: " + path);
         System.out.println("Auth header: " + request.getHeader("Authorization"));
 
-        if (path.startsWith("/auth/")) {
+        if (path.startsWith("/auth/") || path.startsWith("/users")) {
             filterChain.doFilter(request, response);
             return;
-        }
+        } 	
 
         String authHeader = request.getHeader("Authorization");
 

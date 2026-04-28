@@ -37,6 +37,7 @@ public class AuthService {
                 .token(token)
                 .email(saved.getEmail())
                 .role(saved.getRole().name())
+                .userId(saved.getId())        // ← add this
                 .message("Registration successful")
                 .build();
     }
@@ -54,6 +55,7 @@ public class AuthService {
                 .token(token)
                 .email(user.getEmail())
                 .role(user.getRole().name())
+                .userId(user.getId())             // ← add this
                 .message("Login Successful")
                 .build();
     }
