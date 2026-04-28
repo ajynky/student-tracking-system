@@ -20,3 +20,7 @@ sentry:
   traces-sample-rate: 1.0
 server:
   port: 9094
+twilio:
+  account-sid: ACee787ec77d2c688c0a1adf3556bd61b3
+  auth-token: 05e7f7e639044265ccd3f92cc37da01f
+  from-number: +18142472337
