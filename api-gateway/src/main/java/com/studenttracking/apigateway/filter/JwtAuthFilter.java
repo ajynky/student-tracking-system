@@ -1,3 +1,4 @@
+/*
 package com.studenttracking.apigateway.filter;
 
 import com.studenttracking.apigateway.util.JwtUtil;
@@ -78,4 +79,4 @@ public class JwtAuthFilter extends OncePerRequestFilter {
         SecurityContextHolder.getContext().setAuthentication(authentication);
         filterChain.doFilter(request, response);
     }
-}
+}*/

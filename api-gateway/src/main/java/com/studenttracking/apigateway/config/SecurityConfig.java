@@ -1,3 +1,4 @@
+/*
 package com.studenttracking.apigateway.config;
 
 import com.studenttracking.apigateway.filter.JwtAuthFilter;
@@ -47,4 +48,4 @@ public class SecurityConfig {
             );
         return http.build();
     }
-}
+}*/

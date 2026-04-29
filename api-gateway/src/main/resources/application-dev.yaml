@@ -1,3 +1,32 @@
+#spring:
+#  application:
+#    name: api-gateway
+#  datasource:
+#    url: jdbc:postgresql://db.taevafrvhdlcjulzbxnw.supabase.co:5432/postgres
+#    username: postgres
+#    password: Ajynkya@7408
+#    driver-class-name: org.postgresql.Driver
+#  jpa:
+#    hibernate:
+#      ddl-auto: none
+#    show-sql: true
+#jwt:
+#  secret: your-super-secret-key-minimum-32-characters-long
+##    properties:
+##      hibernate:
+##        dialect: org.hibernate.dialect.PostgreSQLDialect
+#sentry:
+#  dsn: https://54205836f14e77e7208fe3534ae3845e@o4511279635955712.ingest.de.sentry.io/4511279744548944
+#  traces-sample-rate: 1.0
+#server:
+#  port: 9091
+#services:
+#  auth-service: http://localhost:9093
+#  student-service: http://localhost:9095
+#  attendance-service: http://localhost:9092
+#  notification-service: http://localhost:9094
+
+
 spring:
   application:
     name: api-gateway
@@ -22,75 +51,75 @@ spring:
                 allowCredentials: true
           routes:
             - id: auth-service
-              uri: ${SERVICES_AUTH_SERVICE:http://localhost:9093}
+              uri: http://localhost:9093
               predicates:
                 - Path=/auth/**
               filters:
                 - JwtAuthenticationFilter
 
             - id: user-service
-              uri: ${SERVICES_AUTH_SERVICE:http://localhost:9093}
+              uri: http://localhost:9093
               predicates:
                 - Path=/users/**
               filters:
                 - JwtAuthenticationFilter
 
             - id: student-service
-              uri: ${SERVICES_STUDENT_SERVICE:http://localhost:9095}
+              uri: http://localhost:9095
               predicates:
                 - Path=/students/**
               filters:
                 - JwtAuthenticationFilter
 
             - id: classes-service
-              uri: ${SERVICES_STUDENT_SERVICE:http://localhost:9095}
+              uri: http://localhost:9095
               predicates:
                 - Path=/classes/**
               filters:
                 - JwtAuthenticationFilter
 
             - id: grades-service
-              uri: ${SERVICES_STUDENT_SERVICE:http://localhost:9095}
+              uri: http://localhost:9095
               predicates:
                 - Path=/grades/**
               filters:
                 - JwtAuthenticationFilter
 
             - id: assignments-service
-              uri: ${SERVICES_STUDENT_SERVICE:http://localhost:9095}
+              uri: http://localhost:9095
               predicates:
                 - Path=/assignments/**
               filters:
                 - JwtAuthenticationFilter
 
             - id: files-service
-              uri: ${SERVICES_STUDENT_SERVICE:http://localhost:9095}
+              uri: http://localhost:9095
               predicates:
                 - Path=/files/**
               filters:
                 - JwtAuthenticationFilter
 
             - id: attendance-service
-              uri: ${SERVICES_ATTENDANCE_SERVICE:http://localhost:9092}
+              uri: http://localhost:9092
               predicates:
                 - Path=/attendance/**
               filters:
                 - JwtAuthenticationFilter
 
             - id: notification-service
-              uri: ${SERVICES_NOTIFICATION_SERVICE:http://localhost:9094}
+              uri: http://localhost:9094
               predicates:
                 - Path=/notifications/**
               filters:
                 - JwtAuthenticationFilter
 
 server:
-  port: ${PORT:9091}
+  port: 9091
 
 jwt:
-  secret: ${JWT_SECRET:your-super-secret-key-minimum-32-characters-long}
+  secret: your-super-secret-key-minimum-32-characters-long
 
 sentry:
-  dsn: ${SENTRY_DSN:https://public@sentry.example.com/1}
+  dsn: https://public@sentry.example.com/1
   traces-sample-rate: 1.0
-  enabled: ${SENTRY_ENABLED:false}
+  enabled: false
