@@ -1,40 +1,46 @@
-spring:
-  application:
-    name: notification-service
-  datasource:
-    url: ${SPRING_DATASOURCE_URL}
-    username: ${SPRING_DATASOURCE_USERNAME}
-    password: ${SPRING_DATASOURCE_PASSWORD}
-    driver-class-name: org.postgresql.Driver
-    hikari:
-      maximum-pool-size: 5
-      minimum-idle: 2
-      connection-timeout: 20000
-      data-source-properties:
-        prepareThreshold: 0
-  jpa:
-    hibernate:
-      ddl-auto: none
-    show-sql: false
-    open-in-view: false
-
+---
+management:
+  endpoint:
+    health:
+      show-details: always
+  endpoints:
+    web:
+      exposure:
+        include:
+          - health,info,metrics,prometheus
+resend:
+  api-key: ${RESEND_API_KEY}
+  from-email: ${RESEND_FROM_EMAIL}
+sentry:
+  dsn: ${SENTRY_DSN}
+  enabled: ${SENTRY_ENABLED:false}
+  traces-sample-rate: 1
 server:
-  port: ${PORT:9094}
   compression:
     enabled: true
     mime-types: application/json,text/plain
     min-response-size: 1024
-
-resend:
-  api-key: ${RESEND_API_KEY}
-  from-email: ${RESEND_FROM_EMAIL}
-
+  port: ${PORT:9094}
+spring:
+  application:
+    name: notification-service
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    hikari:
+      connection-timeout: 20000
+      data-source-properties:
+        prepareThreshold: 0
+      maximum-pool-size: 5
+      minimum-idle: 2
+    password: ${SPRING_DATASOURCE_PASSWORD}
+    url: ${SPRING_DATASOURCE_URL}
+    username: ${SPRING_DATASOURCE_USERNAME}
+  jpa:
+    hibernate:
+      ddl-auto: none
+    open-in-view: false
+    show-sql: false
 twilio:
   account-sid: ${TWILIO_ACCOUNT_SID}
   auth-token: ${TWILIO_AUTH_TOKEN}
   from-number: ${TWILIO_FROM_NUMBER}
-
-sentry:
-  dsn: ${SENTRY_DSN}
-  traces-sample-rate: 1.0
-  enabled: ${SENTRY_ENABLED:false}

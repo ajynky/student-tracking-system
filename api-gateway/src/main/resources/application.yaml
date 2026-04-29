@@ -1,3 +1,24 @@
+---
+jwt:
+  secret: ${JWT_SECRET}
+management:
+  endpoint:
+    health:
+      show-details: always
+  endpoints:
+    web:
+      exposure:
+        include:
+          - health,info,metrics,prometheus
+  health:
+    defaults:
+      enabled: true
+sentry:
+  dsn: ${SENTRY_DSN}
+  enabled: ${SENTRY_ENABLED:false}
+  traces-sample-rate: 1
+server:
+  port: ${PORT:9091}
 spring:
   application:
     name: api-gateway
@@ -8,89 +29,70 @@ spring:
           globalcors:
             cors-configurations:
               '[/**]':
-                allowedOrigins:
-                  - "http://localhost:3000"
-                  - "https://student-tracking-system-omega.vercel.app"
+                allowCredentials: true
+                allowedHeaders:
+                  - '*'
                 allowedMethods:
                   - GET
                   - POST
                   - PUT
                   - DELETE
                   - OPTIONS
-                allowedHeaders:
-                  - "*"
-                allowCredentials: true
+                allowedOrigins:
+                  - http://localhost:3000
+                  - https://student-tracking-system-omega.vercel.app
           routes:
-            - id: auth-service
-              uri: ${SERVICES_AUTH_SERVICE:http://localhost:9093}
+            - filters:
+                - JwtAuthenticationFilter
+              id: auth-service
               predicates:
                 - Path=/auth/**
-              filters:
-                - JwtAuthenticationFilter
-
-            - id: user-service
               uri: ${SERVICES_AUTH_SERVICE:http://localhost:9093}
+            - filters:
+                - JwtAuthenticationFilter
+              id: user-service
               predicates:
                 - Path=/users/**
-              filters:
+              uri: ${SERVICES_AUTH_SERVICE:http://localhost:9093}
+            - filters:
                 - JwtAuthenticationFilter
-
-            - id: student-service
-              uri: ${SERVICES_STUDENT_SERVICE:http://localhost:9095}
+              id: student-service
               predicates:
                 - Path=/students/**
-              filters:
-                - JwtAuthenticationFilter
-
-            - id: classes-service
               uri: ${SERVICES_STUDENT_SERVICE:http://localhost:9095}
+            - filters:
+                - JwtAuthenticationFilter
+              id: classes-service
               predicates:
                 - Path=/classes/**
-              filters:
-                - JwtAuthenticationFilter
-
-            - id: grades-service
               uri: ${SERVICES_STUDENT_SERVICE:http://localhost:9095}
+            - filters:
+                - JwtAuthenticationFilter
+              id: grades-service
               predicates:
                 - Path=/grades/**
-              filters:
-                - JwtAuthenticationFilter
-
-            - id: assignments-service
               uri: ${SERVICES_STUDENT_SERVICE:http://localhost:9095}
+            - filters:
+                - JwtAuthenticationFilter
+              id: assignments-service
               predicates:
                 - Path=/assignments/**
-              filters:
-                - JwtAuthenticationFilter
-
-            - id: files-service
               uri: ${SERVICES_STUDENT_SERVICE:http://localhost:9095}
+            - filters:
+                - JwtAuthenticationFilter
+              id: files-service
               predicates:
                 - Path=/files/**
-              filters:
+              uri: ${SERVICES_STUDENT_SERVICE:http://localhost:9095}
+            - filters:
                 - JwtAuthenticationFilter
-
-            - id: attendance-service
-              uri: ${SERVICES_ATTENDANCE_SERVICE:http://localhost:9092}
+              id: attendance-service
               predicates:
                 - Path=/attendance/**
-              filters:
+              uri: ${SERVICES_ATTENDANCE_SERVICE:http://localhost:9092}
+            - filters:
                 - JwtAuthenticationFilter
-
-            - id: notification-service
-              uri: ${SERVICES_NOTIFICATION_SERVICE:http://localhost:9094}
+              id: notification-service
               predicates:
                 - Path=/notifications/**
-              filters:
-                - JwtAuthenticationFilter
-
-server:
-  port: ${PORT:9091}
-
-jwt:
-  secret: ${JWT_SECRET}
-
-sentry:
-  dsn: ${SENTRY_DSN}
-  traces-sample-rate: 1.0
-  enabled: ${SENTRY_ENABLED:false}
+              uri: ${SERVICES_NOTIFICATION_SERVICE:http://localhost:9094}
