@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import DashboardLayout from '../../components/DashboardLayout';
 import { getCookie } from '../../lib/cookies';
 import api from '../../lib/api';
+import { getToken } from '../../lib/api';
 
 export default function StudentAssignments() {
     const [assignments, setAssignments] = useState<any[]>([]);
@@ -13,6 +14,8 @@ export default function StudentAssignments() {
 
     useEffect(() => {
         const fetchData = async () => {
+            const token = getToken();
+            if (!token) return;
             const studentId = getCookie('studentId');
             if (!studentId) return;
 

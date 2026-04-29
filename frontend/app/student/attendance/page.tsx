@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import DashboardLayout from '../../components/DashboardLayout';
 import { getCookie } from '../../lib/cookies';
 import api from '../../lib/api';
+import { getToken } from '../../lib/api';
 
 export default function StudentAttendance() {
     const [attendance, setAttendance] = useState<any[]>([]);
@@ -11,6 +12,8 @@ export default function StudentAttendance() {
 
     useEffect(() => {
         const fetchAttendance = async () => {
+            const token = getToken();
+            if (!token) return;
             const studentId = getCookie('studentId');
             if (!studentId) return;
 

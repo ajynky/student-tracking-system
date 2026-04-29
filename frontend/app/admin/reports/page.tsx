@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import DashboardLayout from '../../components/DashboardLayout';
 import api from '../../lib/api';
+import { getToken } from '../../lib/api';
 
 export default function AdminReports() {
     const [students, setStudents] = useState<any[]>([]);
@@ -15,6 +16,8 @@ export default function AdminReports() {
 
     useEffect(() => {
         const fetchData = async () => {
+            const token = getToken();
+            if (!token) return;
             try {
                 const [studentsRes, classesRes] = await Promise.all([
                     api.get('/students'),

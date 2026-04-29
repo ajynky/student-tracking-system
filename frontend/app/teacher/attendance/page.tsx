@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import DashboardLayout from '../../components/DashboardLayout';
 import { getCookie } from '../../lib/cookies';
 import api from '../../lib/api';
+import { getToken } from '../../lib/api';
 
 export default function TeacherAttendance() {
     const [classes, setClasses] = useState<any[]>([]);
@@ -20,6 +21,8 @@ export default function TeacherAttendance() {
     // Fetch teacher classes on load
     useEffect(() => {
         const fetchClasses = async () => {
+            const token = getToken();
+            if (!token) return;
             const userId = getCookie('userId');
             if (!userId) return;
 
@@ -42,6 +45,8 @@ export default function TeacherAttendance() {
         if (!selectedClass) return;
 
         const fetchStudents = async () => {
+            const token = getToken();
+            if (!token) return;
             setLoading(true);
             try {
                 const response = await api.get(`/students/class/${selectedClass}`);
@@ -197,8 +202,8 @@ export default function TeacherAttendance() {
                         <div className="p-6 border-t border-gray-200">
                             {message && (
                                 <p className={`mb-4 text-sm ${message.includes('success')
-                                        ? 'text-green-600'
-                                        : 'text-red-600'
+                                    ? 'text-green-600'
+                                    : 'text-red-600'
                                     }`}>
                                     {message}
                                 </p>

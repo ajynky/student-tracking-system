@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import DashboardLayout from '../../components/DashboardLayout';
 import api from '../../lib/api';
+import { getToken } from '../../lib/api';
 
 export default function AdminUsers() {
     const [users, setUsers] = useState<any[]>([]);
@@ -21,7 +22,20 @@ export default function AdminUsers() {
 
     const fetchUsers = async () => {
         setLoading(true);
+        const token = getToken();
+        if (!token) return;
         try {
+            const token = document.cookie
+                .split('; ')
+                .find(row => row.startsWith('token='))
+                ?.split('=')[1];
+
+            if (!token) {
+                console.log('No token found, skipping fetch');
+                setLoading(false);
+                return;
+            }
+
             const response = await api.get('/users');
             setUsers(response.data);
         } catch (err) {
@@ -129,8 +143,8 @@ export default function AdminUsers() {
                     </button>
                     {message && (
                         <p className={`mt-3 text-sm ${message.includes('success')
-                                ? 'text-green-600'
-                                : 'text-red-600'
+                            ? 'text-green-600'
+                            : 'text-red-600'
                             }`}>
                             {message}
                         </p>

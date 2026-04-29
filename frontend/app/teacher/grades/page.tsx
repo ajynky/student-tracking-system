@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import DashboardLayout from '../../components/DashboardLayout';
 import { getCookie } from '../../lib/cookies';
 import api from '../../lib/api';
+import { getToken } from '../../lib/api';
 
 export default function TeacherGrades() {
     const [classes, setClasses] = useState<any[]>([]);
@@ -23,6 +24,8 @@ export default function TeacherGrades() {
 
     useEffect(() => {
         const fetchClasses = async () => {
+            const token = getToken();
+            if (!token) return;
             const userId = getCookie('userId');
             if (!userId) return;
             try {
@@ -41,6 +44,8 @@ export default function TeacherGrades() {
     useEffect(() => {
         if (!selectedClass) return;
         const fetchStudents = async () => {
+            const token = getToken();
+            if (!token) return;
             setLoading(true);
             try {
                 const response = await api.get(`/students/class/${selectedClass}`);
@@ -59,6 +64,8 @@ export default function TeacherGrades() {
     }, [selectedClass]);
 
     const fetchGrades = async (studentId: string) => {
+        const token = getToken();
+        if (!token) return;
         try {
             const response = await api.get(`/grades/student/${studentId}`);
             setGrades(response.data);
@@ -226,8 +233,8 @@ export default function TeacherGrades() {
 
                     {message && (
                         <p className={`mt-3 text-sm ${message.includes('success')
-                                ? 'text-green-600'
-                                : 'text-red-600'
+                            ? 'text-green-600'
+                            : 'text-red-600'
                             }`}>
                             {message}
                         </p>

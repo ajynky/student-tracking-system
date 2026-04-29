@@ -5,6 +5,7 @@ import DashboardLayout from '../components/DashboardLayout';
 import { getCookie } from '../lib/cookies';
 import api from '../lib/api';
 import { useRouter } from 'next/navigation';
+import { getToken } from '../lib/api';
 
 export default function TeacherDashboard() {
     const router = useRouter();
@@ -13,6 +14,8 @@ export default function TeacherDashboard() {
 
     useEffect(() => {
         const fetchData = async () => {
+            const token = getToken();
+            if (!token) return;
             const userId = getCookie('userId');
             if (!userId) return;
 

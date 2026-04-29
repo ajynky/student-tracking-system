@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import DashboardLayout from '../components/DashboardLayout';
 import api from '../lib/api';
 import { useRouter } from 'next/navigation';
+import { getToken } from '../lib/api';
 
 export default function AdminDashboard() {
     const router = useRouter();
@@ -16,6 +17,8 @@ export default function AdminDashboard() {
 
     useEffect(() => {
         const fetchStats = async () => {
+            const token = getToken();
+            if (!token) return;
             try {
                 const [studentsRes, classesRes] = await Promise.all([
                     api.get('/students'),

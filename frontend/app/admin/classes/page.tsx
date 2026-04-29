@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import DashboardLayout from '../../components/DashboardLayout';
 import api from '../../lib/api';
+import { getToken } from '../../lib/api';
 
 export default function AdminClasses() {
     const [classes, setClasses] = useState<any[]>([]);
@@ -20,6 +21,8 @@ export default function AdminClasses() {
 
     const fetchClasses = async () => {
         setLoading(true);
+        const token = getToken();
+        if (!token) return;
         try {
             const response = await api.get('/classes');
             // handle both paginated and plain array response

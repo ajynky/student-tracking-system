@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import DashboardLayout from '../../components/DashboardLayout';
 import { getCookie } from '../../lib/cookies';
 import api from '../../lib/api';
+import { getToken } from '../../lib/api';
 
 export default function TeacherAssignments() {
     const [classes, setClasses] = useState<any[]>([]);
@@ -20,6 +21,8 @@ export default function TeacherAssignments() {
 
     useEffect(() => {
         const fetchClasses = async () => {
+            const token = getToken();
+            if (!token) return;
             const userId = getCookie('userId');
             if (!userId) return;
             try {
@@ -41,6 +44,8 @@ export default function TeacherAssignments() {
     }, [selectedClass]);
 
     const fetchAssignments = async () => {
+        const token = getToken();
+        if (!token) return;
         setLoading(true);
         try {
             const response = await api.get(`/assignments/class/${selectedClass}`);
@@ -156,8 +161,8 @@ export default function TeacherAssignments() {
                         </button>
                         {message && (
                             <p className={`text-sm ${message.includes('success')
-                                    ? 'text-green-600'
-                                    : 'text-red-600'
+                                ? 'text-green-600'
+                                : 'text-red-600'
                                 }`}>
                                 {message}
                             </p>

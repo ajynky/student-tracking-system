@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import DashboardLayout from '../../components/DashboardLayout';
 import { getCookie } from '../../lib/cookies';
 import api from '../../lib/api';
+import { getToken } from '../../lib/api';
 
 export default function StudentGrades() {
     const [grades, setGrades] = useState<any[]>([]);
@@ -11,6 +12,8 @@ export default function StudentGrades() {
 
     useEffect(() => {
         const fetchGrades = async () => {
+            const token = getToken();
+            if (!token) return;
             const studentId = getCookie('studentId');
             if (!studentId) return;
 
@@ -64,10 +67,10 @@ export default function StudentGrades() {
                                     </td>
                                     <td className="px-6 py-4">
                                         <span className={`text-sm font-medium ${grade.score >= 75
-                                                ? 'text-green-600'
-                                                : grade.score >= 50
-                                                    ? 'text-yellow-600'
-                                                    : 'text-red-600'
+                                            ? 'text-green-600'
+                                            : grade.score >= 50
+                                                ? 'text-yellow-600'
+                                                : 'text-red-600'
                                             }`}>
                                             {grade.score}
                                         </span>

@@ -6,17 +6,18 @@ const api = axios.create({
     baseURL: API_BASE_URL,
 });
 
-// Add JWT token to every request automatically
-api.interceptors.request.use((config) => {
-    if (typeof window !== 'undefined') {
-        const token = document.cookie
-            .split('; ')
-            .find(row => row.startsWith('token='))
-            ?.split('=')[1];
+export const getToken = (): string | null => {
+    if (typeof window === 'undefined') return null;
+    return document.cookie
+        .split('; ')
+        .find(row => row.startsWith('token='))
+        ?.split('=')[1] || null;
+};
 
-        if (token) {
-            config.headers.Authorization = `Bearer ${token}`;
-        }
+api.interceptors.request.use((config) => {
+    const token = getToken();
+    if (token) {
+        config.headers.Authorization = `Bearer ${token}`;
     }
     return config;
 });
