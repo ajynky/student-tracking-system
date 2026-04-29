@@ -132,6 +132,8 @@ public class ProxyController {
         String targetUrl = serviceUrl + path +
             (query != null ? "?" + query : "");
 
+         log.info("Proxying request to: {}", targetUrl); 
+
         // Copy headers
         HttpHeaders headers = new HttpHeaders();
         Enumeration<String> headerNames = request.getHeaderNames();
