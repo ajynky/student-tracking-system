@@ -16,7 +16,10 @@ export default function AdminClasses() {
     });
 
     useEffect(() => {
-        fetchClasses();
+        const timer = setTimeout(() => {
+            fetchClasses();
+        }, 500);
+        return () => clearTimeout(timer);
     }, []);
 
     const fetchClasses = async () => {

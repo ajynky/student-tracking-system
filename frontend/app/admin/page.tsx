@@ -37,7 +37,11 @@ export default function AdminDashboard() {
             }
         };
 
-        fetchStats();
+        const timer = setTimeout(() => {
+            fetchStats();
+        }, 500);
+
+        return () => clearTimeout(timer);
     }, []);
 
     return (

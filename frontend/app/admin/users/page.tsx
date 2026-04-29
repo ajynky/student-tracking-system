@@ -17,7 +17,10 @@ export default function AdminUsers() {
     });
 
     useEffect(() => {
-        fetchUsers();
+        const timer = setTimeout(() => {
+            fetchUsers();
+        }, 500); // wait 500ms for cookies to be ready
+        return () => clearTimeout(timer);
     }, []);
 
     const fetchUsers = async () => {
