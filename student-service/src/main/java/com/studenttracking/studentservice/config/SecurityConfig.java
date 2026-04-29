@@ -13,29 +13,21 @@ import org.springframework.web.cors.CorsConfiguration;
 @EnableWebSecurity
 public class SecurityConfig {
 
-	/*
-	 * @Bean public SecurityFilterChain securityFilterChain(HttpSecurity http)
-	 * throws Exception { http .cors(cors -> cors.configurationSource(request -> {
-	 * CorsConfiguration config = new CorsConfiguration();
-	 * config.addAllowedOrigin("http://localhost:3000");
-	 * config.addAllowedMethod("*"); config.addAllowedHeader("*");
-	 * config.setAllowCredentials(true); return config; })); return http.build(); }
-	 */
     
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http)
             throws Exception {
         http
-            .cors(cors -> cors.configurationSource(request -> {
-                CorsConfiguration config = new CorsConfiguration();
-                config.addAllowedOrigin("http://localhost:3000");
-                config.addAllowedOrigin("https://student-tracking-system-omega.vercel.app");
-                config.addAllowedOriginPattern("https://*.vercel.app");
-                config.addAllowedMethod("*");
-                config.addAllowedHeader("*");
-                config.setAllowCredentials(true);
-                return config;
-            }))
+            // .cors(cors -> cors.configurationSource(request -> {
+            //     CorsConfiguration config = new CorsConfiguration();
+            //     config.addAllowedOrigin("http://localhost:3000");
+            //     config.addAllowedOrigin("https://student-tracking-system-omega.vercel.app");
+            //     config.addAllowedOriginPattern("https://*.vercel.app");
+            //     config.addAllowedMethod("*");
+            //     config.addAllowedHeader("*");
+            //     config.setAllowCredentials(true);
+            //     return config;
+            // }))
             .csrf(AbstractHttpConfigurer::disable)
             .sessionManagement(s -> s
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
