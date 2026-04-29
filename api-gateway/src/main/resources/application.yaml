@@ -88,9 +88,9 @@ server:
   port: ${PORT:9091}
 
 jwt:
-  secret: ${JWT_SECRET:your-super-secret-key-minimum-32-characters-long}
+  secret: ${JWT_SECRET}
 
 sentry:
-  dsn: ${SENTRY_DSN:https://public@sentry.example.com/1}
+  dsn: ${SENTRY_DSN}
   traces-sample-rate: 1.0
   enabled: ${SENTRY_ENABLED:false}

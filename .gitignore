@@ -7,3 +7,12 @@ api-gateway/.idea/vcs.xml
 .idea/modules.xml
 .idea/student-tracking-system.iml
 .idea/material_theme_project_new.xml
+
+# Environment files — never commit real credentials
+.env
+.env.*
+!.env.example
+
+# Local Spring Boot dev configs — contain real credentials
+**/application-dev.yml
+**/application-dev.yaml
