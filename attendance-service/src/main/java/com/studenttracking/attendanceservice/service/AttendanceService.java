@@ -5,6 +5,7 @@ import com.studenttracking.attendanceservice.dto.AttendanceRequest;
 import com.studenttracking.attendanceservice.dto.BulkAttendanceRequest;
 import com.studenttracking.attendanceservice.entity.Attendance;
 import com.studenttracking.attendanceservice.enums.AttendanceStatus;
+import com.studenttracking.attendanceservice.exception.BusinessException;
 import com.studenttracking.attendanceservice.repository.AttendanceRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -26,7 +27,7 @@ public class AttendanceService {
                 request.getClassId(),
                 request.getDate())
                 .ifPresent(a -> {
-                    throw new RuntimeException(
+                    throw new BusinessException(
                         "Attendance already marked for this student on this date");
                 });
 
@@ -76,7 +77,7 @@ public class AttendanceService {
                     request.getClassId(),
                     request.getDate())
                     .ifPresent(a -> {
-                        throw new RuntimeException(
+                        throw new BusinessException(
                             "Attendance already marked for student: "
                             + record.getStudentId());
                     });

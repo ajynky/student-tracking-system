@@ -2,6 +2,7 @@ package com.studenttracking.studentservice.service;
 
 import com.studenttracking.studentservice.dto.StudentRequest;
 import com.studenttracking.studentservice.entity.Student;
+import com.studenttracking.studentservice.exception.BusinessException;
 import com.studenttracking.studentservice.repository.StudentRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -19,7 +20,7 @@ public class StudentService {
 
     public Student createStudent(StudentRequest request) {
         if (studentRepository.existsByRollNo(request.getRollNo())) {
-            throw new RuntimeException("Roll number already exists");
+            throw new BusinessException("Roll number already exists");
         }
         Student student = Student.builder()
                 .userId(request.getUserId())

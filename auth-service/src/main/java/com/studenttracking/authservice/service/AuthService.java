@@ -5,6 +5,7 @@ import com.studenttracking.authservice.dto.LoginRequest;
 import com.studenttracking.authservice.dto.RegisterRequest;
 import com.studenttracking.authservice.entity.User;
 import com.studenttracking.authservice.enums.Role;
+import com.studenttracking.authservice.exception.BusinessException;
 import com.studenttracking.authservice.repository.UserRepository;
 import com.studenttracking.authservice.util.JwtUtil;
 import lombok.RequiredArgsConstructor;
@@ -20,7 +21,7 @@ public class AuthService {
 
     public AuthResponse register(RegisterRequest request) {
         if (userRepository.existsByEmail(request.getEmail())) {
-            throw new RuntimeException("Email already registered");
+            throw new BusinessException("Email already registered");
         }
 
         User user = User.builder()
@@ -47,7 +48,7 @@ public class AuthService {
                 .orElseThrow(() -> new RuntimeException("User not found."));
 
         if (!passwordEncoder.matches(request.getPassword(), user.getPasswordHash())) {
-            throw new RuntimeException("Invalid password");
+            throw new BusinessException("Invalid password");
         }
         String token = jwtUtil.generateToken(user.getEmail(), user.getRole().name());
 
