@@ -13,7 +13,7 @@ spring:
     open-in-view: false
 
 server:
-  port: 9092
+  port: ${PORT:9092}
 
 jwt:
   secret: ${JWT_SECRET:your-super-secret-key-minimum-32-characters-long}
