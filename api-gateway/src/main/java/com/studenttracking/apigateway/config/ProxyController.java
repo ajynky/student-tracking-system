@@ -41,8 +41,8 @@ public class ProxyController {
     private final RestTemplate restTemplate = createRestTemplate();
 
     private RestTemplate createRestTemplate() {
-        HttpComponentsClientHttpRequestFactory factory = 
-            new HttpComponentsClientHttpRequestFactory();
+        HttpComponentsClientHttpRequestFactory factory =
+                new HttpComponentsClientHttpRequestFactory();
         factory.setConnectionRequestTimeout(10000);
         factory.setReadTimeout(30000);
         return new RestTemplate(factory);
@@ -111,7 +111,7 @@ public class ProxyController {
             HttpServletRequest request) {
         return proxy(notificationServiceUrl, body, method, request);
     }
-    
+
     @RequestMapping("/users/**")
     public ResponseEntity<String> proxyUsers(
             @RequestBody(required = false) String body,
@@ -130,9 +130,9 @@ public class ProxyController {
         String path = request.getRequestURI();
         String query = request.getQueryString();
         String targetUrl = serviceUrl + path +
-            (query != null ? "?" + query : "");
+                (query != null ? "?" + query : "");
 
-         log.info("Proxying request to: {}", targetUrl); 
+        log.info("Proxying request to: {}", targetUrl);
 
         // Copy headers
         HttpHeaders headers = new HttpHeaders();
@@ -141,7 +141,7 @@ public class ProxyController {
             String headerName = headerNames.nextElement();
             if (!headerName.equalsIgnoreCase("host")) {
                 headers.put(headerName,
-                    Collections.list(request.getHeaders(headerName)));
+                        Collections.list(request.getHeaders(headerName)));
             }
         }
         headers.setContentType(MediaType.APPLICATION_JSON);
@@ -149,26 +149,31 @@ public class ProxyController {
         HttpEntity<String> entity = new HttpEntity<>(body, headers);
 
         try {
-            return restTemplate.exchange(
-                URI.create(targetUrl),
-                method,
-                entity,
-                String.class
+            ResponseEntity<String> response = restTemplate.exchange(
+                    URI.create(targetUrl),
+                    method,
+                    entity,
+                    String.class
             );
+            log.info("Response status: {}", response.getStatusCode());
+            log.info("Response body: {}", response.getBody());
+            return response;
         } catch (HttpClientErrorException e) {
             log.error("Client error: {}", e.getMessage());
             return ResponseEntity
-                .status(e.getStatusCode())
-                .body(e.getResponseBodyAsString());
+                    .status(e.getStatusCode())
+                    .body(e.getResponseBodyAsString());
         } catch (HttpServerErrorException e) {
             log.error("Server error: {}", e.getMessage());
             return ResponseEntity
-                .status(e.getStatusCode())
-                .body(e.getResponseBodyAsString());
+                    .status(e.getStatusCode())
+                    .body(e.getResponseBodyAsString());
         } catch (Exception e) {
             log.error("Proxy error: {}", e.getMessage());
+            log.error("Proxy error cause: {}", e.getCause() != null ?
+                    e.getCause().getMessage() : "no cause");
             return ResponseEntity.status(HttpStatus.BAD_GATEWAY)
-                .body("{\"error\": \"Service unavailable\"}");
+                    .body("{\"error\": \"Service unavailable\"}");
         }
     }
 }
