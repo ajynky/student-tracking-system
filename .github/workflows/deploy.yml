@@ -85,74 +85,74 @@ jobs:
       # ── api-gateway ──────────────────────────
       - name: Sync api-gateway secrets
         run: |
-          railway variables --set \
-            "JWT_SECRET=${{ secrets.JWT_SECRET }}" \
-            "SENTRY_DSN=${{ secrets.SENTRY_DSN_GATEWAY }}" \
-            "SENTRY_ENABLED=true" \
-            "SERVICES_AUTH_SERVICE=http://auth-service.railway.internal:8080" \
-            "SERVICES_STUDENT_SERVICE=http://student-service.railway.internal:8080" \
-            "SERVICES_ATTENDANCE_SERVICE=http://attendance-service.railway.internal:8080" \
-            "SERVICES_NOTIFICATION_SERVICE=http://notification-service.railway.internal:8080" \
+          railway variables \
+            --set "JWT_SECRET=${{ secrets.JWT_SECRET }}" \
+            --set "SENTRY_DSN=${{ secrets.SENTRY_DSN_GATEWAY }}" \
+            --set "SENTRY_ENABLED=true" \
+            --set "SERVICES_AUTH_SERVICE=http://auth-service.railway.internal:8080" \
+            --set "SERVICES_STUDENT_SERVICE=http://student-service.railway.internal:8080" \
+            --set "SERVICES_ATTENDANCE_SERVICE=http://attendance-service.railway.internal:8080" \
+            --set "SERVICES_NOTIFICATION_SERVICE=http://notification-service.railway.internal:8080" \
             --service api-gateway \
             --environment production
 
       # ── auth-service ─────────────────────────
       - name: Sync auth-service secrets
         run: |
-          railway variables --set \
-            "SPRING_DATASOURCE_URL=${{ secrets.SPRING_DATASOURCE_URL }}" \
-            "SPRING_DATASOURCE_USERNAME=${{ secrets.SPRING_DATASOURCE_USERNAME }}" \
-            "SPRING_DATASOURCE_PASSWORD=${{ secrets.SPRING_DATASOURCE_PASSWORD }}" \
-            "JWT_SECRET=${{ secrets.JWT_SECRET }}" \
-            "JWT_EXPIRATION=${{ secrets.JWT_EXPIRATION }}" \
-            "SENTRY_DSN=${{ secrets.SENTRY_DSN_AUTH }}" \
-            "SENTRY_ENABLED=true" \
+          railway variables \
+            --set "SPRING_DATASOURCE_URL=${{ secrets.SPRING_DATASOURCE_URL }}" \
+            --set "SPRING_DATASOURCE_USERNAME=${{ secrets.SPRING_DATASOURCE_USERNAME }}" \
+            --set "SPRING_DATASOURCE_PASSWORD=${{ secrets.SPRING_DATASOURCE_PASSWORD }}" \
+            --set "JWT_SECRET=${{ secrets.JWT_SECRET }}" \
+            --set "JWT_EXPIRATION=${{ secrets.JWT_EXPIRATION }}" \
+            --set "SENTRY_DSN=${{ secrets.SENTRY_DSN_AUTH }}" \
+            --set "SENTRY_ENABLED=true" \
             --service auth-service \
             --environment production
 
       # ── student-service ──────────────────────
       - name: Sync student-service secrets
         run: |
-          railway variables --set \
-            "SPRING_DATASOURCE_URL=${{ secrets.SPRING_DATASOURCE_URL }}" \
-            "SPRING_DATASOURCE_USERNAME=${{ secrets.SPRING_DATASOURCE_USERNAME }}" \
-            "SPRING_DATASOURCE_PASSWORD=${{ secrets.SPRING_DATASOURCE_PASSWORD }}" \
-            "JWT_SECRET=${{ secrets.JWT_SECRET }}" \
-            "SUPABASE_URL=${{ secrets.SUPABASE_URL }}" \
-            "SUPABASE_SERVICE_ROLE_KEY=${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}" \
-            "SERVICES_NOTIFICATION_SERVICE=http://notification-service.railway.internal:8080" \
-            "SENTRY_DSN=${{ secrets.SENTRY_DSN_STUDENT }}" \
-            "SENTRY_ENABLED=true" \
+          railway variables \
+            --set "SPRING_DATASOURCE_URL=${{ secrets.SPRING_DATASOURCE_URL }}" \
+            --set "SPRING_DATASOURCE_USERNAME=${{ secrets.SPRING_DATASOURCE_USERNAME }}" \
+            --set "SPRING_DATASOURCE_PASSWORD=${{ secrets.SPRING_DATASOURCE_PASSWORD }}" \
+            --set "JWT_SECRET=${{ secrets.JWT_SECRET }}" \
+            --set "SUPABASE_URL=${{ secrets.SUPABASE_URL }}" \
+            --set "SUPABASE_SERVICE_ROLE_KEY=${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}" \
+            --set "SERVICES_NOTIFICATION_SERVICE=http://notification-service.railway.internal:8080" \
+            --set "SENTRY_DSN=${{ secrets.SENTRY_DSN_STUDENT }}" \
+            --set "SENTRY_ENABLED=true" \
             --service student-service \
             --environment production
 
       # ── attendance-service ───────────────────
       - name: Sync attendance-service secrets
         run: |
-          railway variables --set \
-            "SPRING_DATASOURCE_URL=${{ secrets.SPRING_DATASOURCE_URL }}" \
-            "SPRING_DATASOURCE_USERNAME=${{ secrets.SPRING_DATASOURCE_USERNAME }}" \
-            "SPRING_DATASOURCE_PASSWORD=${{ secrets.SPRING_DATASOURCE_PASSWORD }}" \
-            "JWT_SECRET=${{ secrets.JWT_SECRET }}" \
-            "SERVICES_NOTIFICATION_SERVICE=http://notification-service.railway.internal:8080" \
-            "SENTRY_DSN=${{ secrets.SENTRY_DSN_ATTENDANCE }}" \
-            "SENTRY_ENABLED=true" \
+          railway variables \
+            --set "SPRING_DATASOURCE_URL=${{ secrets.SPRING_DATASOURCE_URL }}" \
+            --set "SPRING_DATASOURCE_USERNAME=${{ secrets.SPRING_DATASOURCE_USERNAME }}" \
+            --set "SPRING_DATASOURCE_PASSWORD=${{ secrets.SPRING_DATASOURCE_PASSWORD }}" \
+            --set "JWT_SECRET=${{ secrets.JWT_SECRET }}" \
+            --set "SERVICES_NOTIFICATION_SERVICE=http://notification-service.railway.internal:8080" \
+            --set "SENTRY_DSN=${{ secrets.SENTRY_DSN_ATTENDANCE }}" \
+            --set "SENTRY_ENABLED=true" \
             --service attendance-service \
             --environment production
 
       # ── notification-service ─────────────────
       - name: Sync notification-service secrets
         run: |
-          railway variables --set \
-            "SPRING_DATASOURCE_URL=${{ secrets.SPRING_DATASOURCE_URL }}" \
-            "SPRING_DATASOURCE_USERNAME=${{ secrets.SPRING_DATASOURCE_USERNAME }}" \
-            "SPRING_DATASOURCE_PASSWORD=${{ secrets.SPRING_DATASOURCE_PASSWORD }}" \
-            "RESEND_API_KEY=${{ secrets.RESEND_API_KEY }}" \
-            "RESEND_FROM_EMAIL=${{ secrets.RESEND_FROM_EMAIL }}" \
-            "TWILIO_ACCOUNT_SID=${{ secrets.TWILIO_ACCOUNT_SID }}" \
-            "TWILIO_AUTH_TOKEN=${{ secrets.TWILIO_AUTH_TOKEN }}" \
-            "TWILIO_FROM_NUMBER=${{ secrets.TWILIO_FROM_NUMBER }}" \
-            "SENTRY_DSN=${{ secrets.SENTRY_DSN_NOTIFICATION }}" \
-            "SENTRY_ENABLED=true" \
+          railway variables \
+            --set "SPRING_DATASOURCE_URL=${{ secrets.SPRING_DATASOURCE_URL }}" \
+            --set "SPRING_DATASOURCE_USERNAME=${{ secrets.SPRING_DATASOURCE_USERNAME }}" \
+            --set "SPRING_DATASOURCE_PASSWORD=${{ secrets.SPRING_DATASOURCE_PASSWORD }}" \
+            --set "RESEND_API_KEY=${{ secrets.RESEND_API_KEY }}" \
+            --set "RESEND_FROM_EMAIL=${{ secrets.RESEND_FROM_EMAIL }}" \
+            --set "TWILIO_ACCOUNT_SID=${{ secrets.TWILIO_ACCOUNT_SID }}" \
+            --set "TWILIO_AUTH_TOKEN=${{ secrets.TWILIO_AUTH_TOKEN }}" \
+            --set "TWILIO_FROM_NUMBER=${{ secrets.TWILIO_FROM_NUMBER }}" \
+            --set "SENTRY_DSN=${{ secrets.SENTRY_DSN_NOTIFICATION }}" \
+            --set "SENTRY_ENABLED=true" \
             --service notification-service \
             --environment production
