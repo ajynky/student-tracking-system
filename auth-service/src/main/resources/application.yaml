@@ -10,7 +10,10 @@ management:
     web:
       exposure:
         include:
-          - health,info,metrics,prometheus
+          - health
+          - info
+          - metrics
+          - prometheus
 sentry:
   dsn: ${SENTRY_DSN}
   enabled: ${SENTRY_ENABLED:false}
