@@ -1,47 +1,52 @@
-spring:
-  application:
-    name: student-service
-  datasource:
-    url: ${SPRING_DATASOURCE_URL}
-    username: ${SPRING_DATASOURCE_USERNAME}
-    password: ${SPRING_DATASOURCE_PASSWORD}
-    driver-class-name: org.postgresql.Driver
-    hikari:
-      maximum-pool-size: 5
-      minimum-idle: 2
-      connection-timeout: 20000
-      data-source-properties:
-        prepareThreshold: 0
-  jpa:
-    hibernate:
-      ddl-auto: none
-    show-sql: false
-    open-in-view: false
+---
+jwt:
+  secret: ${JWT_SECRET}
+management:
+  endpoint:
+    health:
+      show-details: always
+  endpoints:
+    web:
+      exposure:
+        include:
+          - health,info,metrics,prometheus
   servlet:
     multipart:
       max-file-size: 10MB
       max-request-size: 10MB
-
+sentry:
+  dsn: ${SENTRY_DSN}
+  enabled: ${SENTRY_ENABLED:false}
+  traces-sample-rate: 1
 server:
-  port: ${PORT:9095}
   compression:
     enabled: true
     mime-types: application/json,text/plain
     min-response-size: 1024
-
-jwt:
-  secret: ${JWT_SECRET}
-
+  port: ${PORT:9095}
+services:
+  notification-service: ${SERVICES_NOTIFICATION_SERVICE:http://localhost:9094}
+spring:
+  application:
+    name: student-service
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    hikari:
+      connection-timeout: 20000
+      data-source-properties:
+        prepareThreshold: 0
+      maximum-pool-size: 5
+      minimum-idle: 2
+    password: ${SPRING_DATASOURCE_PASSWORD}
+    url: ${SPRING_DATASOURCE_URL}
+    username: ${SPRING_DATASOURCE_USERNAME}
+  jpa:
+    hibernate:
+      ddl-auto: none
+    open-in-view: false
+    show-sql: false
 supabase:
-  url: ${SUPABASE_URL}
   service-role-key: ${SUPABASE_SERVICE_ROLE_KEY}
   storage:
     bucket: assignments
-
-services:
-  notification-service: ${SERVICES_NOTIFICATION_SERVICE:http://localhost:9094}
-
-sentry:
-  dsn: ${SENTRY_DSN}
-  traces-sample-rate: 1.0
-  enabled: ${SENTRY_ENABLED:false}
+  url: ${SUPABASE_URL}
