@@ -14,10 +14,10 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
 
     useEffect(() => {
         const getCookie = (name: string) => {
-            return document.cookie
+            const row = document.cookie
                 .split('; ')
-                .find(row => row.startsWith(`${name}=`))
-                ?.split('=')[1] || '';
+                .find(r => r.startsWith(`${name}=`));
+            return row ? row.substring(name.length + 1) : '';
         };
 
         setRole(getCookie('role'));

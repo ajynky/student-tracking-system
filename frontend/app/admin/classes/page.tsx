@@ -16,16 +16,13 @@ export default function AdminClasses() {
     });
 
     useEffect(() => {
-        const timer = setTimeout(() => {
-            fetchClasses();
-        }, 500);
-        return () => clearTimeout(timer);
+        fetchClasses();
     }, []);
 
     const fetchClasses = async () => {
         setLoading(true);
         const token = getToken();
-        if (!token) return;
+        if (!token) { setLoading(false); return; }
         try {
             const response = await api.get('/classes');
             // handle both paginated and plain array response

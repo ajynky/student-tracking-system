@@ -30,7 +30,19 @@ public class StorageService {
 
     public String uploadFile(MultipartFile file, String folder) throws IOException {
 
-        String fileName = folder + "/" + UUID.randomUUID() + "_" + file.getOriginalFilename();
+        String originalFilename = file.getOriginalFilename();
+        if (originalFilename == null || originalFilename.isBlank()) {
+            throw new IllegalArgumentException("File must have a valid filename");
+        }
+
+        // Basic file type guard — only allow common document/image types
+        String ext = originalFilename.substring(originalFilename.lastIndexOf('.') + 1).toLowerCase();
+        java.util.Set<String> allowed = java.util.Set.of("pdf", "doc", "docx", "png", "jpg", "jpeg", "zip");
+        if (!allowed.contains(ext)) {
+            throw new IllegalArgumentException("File type not allowed: " + ext);
+        }
+
+        String fileName = folder + "/" + UUID.randomUUID() + "_" + originalFilename;
 
         WebClient webClient = WebClient.builder()
                 .baseUrl(supabaseUrl)

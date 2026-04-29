@@ -9,6 +9,7 @@ import com.studenttracking.attendanceservice.exception.BusinessException;
 import com.studenttracking.attendanceservice.repository.AttendanceRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.*;
@@ -68,6 +69,7 @@ public class AttendanceService {
         return saved;
     }
 
+    @Transactional
     public List<Attendance> markBulkAttendance(BulkAttendanceRequest request) {
         List<Attendance> saved = new ArrayList<>();
 

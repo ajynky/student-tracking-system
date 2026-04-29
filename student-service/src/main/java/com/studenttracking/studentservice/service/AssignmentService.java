@@ -4,6 +4,7 @@ import com.studenttracking.studentservice.dto.AssignmentRequest;
 import com.studenttracking.studentservice.dto.SubmissionRequest;
 import com.studenttracking.studentservice.entity.Assignment;
 import com.studenttracking.studentservice.entity.Submission;
+import com.studenttracking.studentservice.exception.BusinessException;
 import com.studenttracking.studentservice.repository.AssignmentRepository;
 import com.studenttracking.studentservice.repository.SubmissionRepository;
 import lombok.RequiredArgsConstructor;
@@ -37,23 +38,23 @@ public class AssignmentService {
 
     public Assignment getAssignmentById(UUID assignmentId) {
         return assignmentRepository.findById(assignmentId)
-                .orElseThrow(() -> new RuntimeException("Assignment not found"));
+                .orElseThrow(() -> new BusinessException("Assignment not found"));
     }
 
     public void deleteAssignment(UUID assignmentId) {
         assignmentRepository.findById(assignmentId)
-                .orElseThrow(() -> new RuntimeException("Assignment not found"));
+                .orElseThrow(() -> new BusinessException("Assignment not found"));
         assignmentRepository.deleteById(assignmentId);
     }
 
     public Submission submitAssignment(SubmissionRequest request) {
         assignmentRepository.findById(request.getAssignmentId())
-                .orElseThrow(() -> new RuntimeException("Assignment not found"));
+                .orElseThrow(() -> new BusinessException("Assignment not found"));
 
         submissionRepository.findByAssignmentIdAndStudentId(
                 request.getAssignmentId(), request.getStudentId())
                 .ifPresent(s -> {
-                    throw new RuntimeException("Already submitted");
+                    throw new BusinessException("Already submitted");
                 });
 
         Submission submission = Submission.builder()

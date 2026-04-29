@@ -7,6 +7,9 @@ spring:
     password: ${SPRING_DATASOURCE_PASSWORD}
     driver-class-name: org.postgresql.Driver
     hikari:
+      maximum-pool-size: 5
+      minimum-idle: 2
+      connection-timeout: 20000
       data-source-properties:
         prepareThreshold: 0
   jpa:
@@ -17,6 +20,10 @@ spring:
 
 server:
   port: ${PORT:9094}
+  compression:
+    enabled: true
+    mime-types: application/json,text/plain
+    min-response-size: 1024
 
 resend:
   api-key: ${RESEND_API_KEY}
