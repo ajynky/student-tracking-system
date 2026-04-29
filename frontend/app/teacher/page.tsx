@@ -15,9 +15,9 @@ export default function TeacherDashboard() {
     useEffect(() => {
         const fetchData = async () => {
             const token = getToken();
-            if (!token) return;
+            if (!token) { setLoading(false); return; }
             const userId = getCookie('userId');
-            if (!userId) return;
+            if (!userId) { setLoading(false); return; }
 
             try {
                 const response = await api.get(`/classes/teacher/${userId}`);
@@ -42,7 +42,7 @@ export default function TeacherDashboard() {
                         Teacher Dashboard
                     </h2>
                     <p className="text-gray-500 mt-1">
-                        You have {classes.length} class(es) assigned
+                        You have {loading ? '...' : classes.length} class(es) assigned
                     </p>
                 </div>
 
@@ -51,7 +51,7 @@ export default function TeacherDashboard() {
                     <div className="bg-blue-50 rounded-lg p-4">
                         <p className="text-blue-600 text-sm font-medium">My Classes</p>
                         <p className="text-2xl font-bold text-blue-800 mt-1">
-                            {classes.length}
+                            {loading ? '...' : classes.length}
                         </p>
                     </div>
                 </div>

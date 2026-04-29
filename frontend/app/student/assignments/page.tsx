@@ -15,9 +15,9 @@ export default function StudentAssignments() {
     useEffect(() => {
         const fetchData = async () => {
             const token = getToken();
-            if (!token) return;
+            if (!token) { setLoading(false); return; }
             const studentId = getCookie('studentId');
-            if (!studentId) return;
+            if (!studentId) { setLoading(false); return; }
 
             try {
                 // Get student to find classId

@@ -13,9 +13,9 @@ export default function StudentAttendance() {
     useEffect(() => {
         const fetchAttendance = async () => {
             const token = getToken();
-            if (!token) return;
+            if (!token) { setLoading(false); return; }
             const studentId = getCookie('studentId');
-            if (!studentId) return;
+            if (!studentId) { setLoading(false); return; }
 
             try {
                 const response = await api.get(
@@ -48,20 +48,26 @@ export default function StudentAttendance() {
                     <div className="bg-white rounded-lg p-4 shadow-sm">
                         <p className="text-gray-500 text-sm">Total Days</p>
                         <p className="text-2xl font-bold text-gray-800">
-                            {attendance.length}
+                            {loading ? '...' : attendance.length}
                         </p>
                     </div>
                     <div className="bg-green-50 rounded-lg p-4">
                         <p className="text-green-600 text-sm">Present</p>
-                        <p className="text-2xl font-bold text-green-800">{present}</p>
+                        <p className="text-2xl font-bold text-green-800">
+                            {loading ? '...' : present}
+                        </p>
                     </div>
                     <div className="bg-red-50 rounded-lg p-4">
                         <p className="text-red-600 text-sm">Absent</p>
-                        <p className="text-2xl font-bold text-red-800">{absent}</p>
+                        <p className="text-2xl font-bold text-red-800">
+                            {loading ? '...' : absent}
+                        </p>
                     </div>
                     <div className="bg-blue-50 rounded-lg p-4">
                         <p className="text-blue-600 text-sm">Attendance %</p>
-                        <p className="text-2xl font-bold text-blue-800">{percentage}%</p>
+                        <p className="text-2xl font-bold text-blue-800">
+                            {loading ? '...' : `${percentage}%`}
+                        </p>
                     </div>
                 </div>
 

@@ -16,7 +16,7 @@ export default function StudentDashboard() {
     useEffect(() => {
         const fetchData = async () => {
             const token = getToken();
-            if (!token) return;
+            if (!token) { setLoading(false); return; }
             const studentId = getCookie('studentId');
 
             if (!studentId) {

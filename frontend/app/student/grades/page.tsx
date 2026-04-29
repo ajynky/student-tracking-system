@@ -13,9 +13,9 @@ export default function StudentGrades() {
     useEffect(() => {
         const fetchGrades = async () => {
             const token = getToken();
-            if (!token) return;
+            if (!token) { setLoading(false); return; }
             const studentId = getCookie('studentId');
-            if (!studentId) return;
+            if (!studentId) { setLoading(false); return; }
 
             try {
                 const response = await api.get(

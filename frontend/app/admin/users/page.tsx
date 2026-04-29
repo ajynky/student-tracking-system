@@ -26,19 +26,8 @@ export default function AdminUsers() {
     const fetchUsers = async () => {
         setLoading(true);
         const token = getToken();
-        if (!token) return;
+        if (!token) { setLoading(false); return; }
         try {
-            const token = document.cookie
-                .split('; ')
-                .find(row => row.startsWith('token='))
-                ?.split('=')[1];
-
-            if (!token) {
-                console.log('No token found, skipping fetch');
-                setLoading(false);
-                return;
-            }
-
             const response = await api.get('/users');
             setUsers(response.data);
         } catch (err) {
