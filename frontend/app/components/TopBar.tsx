@@ -13,6 +13,8 @@ export default function TopBar({ email }: TopBarProps) {
         document.cookie = 'token=; path=/; max-age=0';
         document.cookie = 'role=; path=/; max-age=0';
         document.cookie = 'email=; path=/; max-age=0';
+        document.cookie = 'userId=; path=/; max-age=0';
+        document.cookie = 'studentId=; path=/; max-age=0';
         router.push('/login');
     };
 

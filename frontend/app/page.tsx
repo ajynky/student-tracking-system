@@ -12,10 +12,10 @@ export default function Home() {
       .find(row => row.startsWith('token='));
 
     if (token) {
-      const role = document.cookie
+      const roleRow = document.cookie
         .split('; ')
-        .find(row => row.startsWith('role='))
-        ?.split('=')[1];
+        .find(row => row.startsWith('role='));
+      const role = roleRow ? roleRow.substring('role='.length) : undefined;
 
       if (role === 'ADMIN') router.push('/admin');
       else if (role === 'TEACHER') router.push('/teacher');

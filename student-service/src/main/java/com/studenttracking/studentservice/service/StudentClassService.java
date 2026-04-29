@@ -2,6 +2,7 @@ package com.studenttracking.studentservice.service;
 
 import com.studenttracking.studentservice.dto.StudentClassRequest;
 import com.studenttracking.studentservice.entity.StudentClass;
+import com.studenttracking.studentservice.exception.BusinessException;
 import com.studenttracking.studentservice.repository.StudentClassRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -31,7 +32,7 @@ public class StudentClassService {
 
     public StudentClass getClassById(UUID id) {
         return classRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Class not found"));
+                .orElseThrow(() -> new BusinessException("Class not found"));
     }
 
     public List<StudentClass> getClassesByTeacher(UUID teacherId) {

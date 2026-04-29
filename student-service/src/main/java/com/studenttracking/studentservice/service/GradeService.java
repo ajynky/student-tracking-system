@@ -2,6 +2,7 @@ package com.studenttracking.studentservice.service;
 
 import com.studenttracking.studentservice.dto.GradeRequest;
 import com.studenttracking.studentservice.entity.Grade;
+import com.studenttracking.studentservice.exception.BusinessException;
 import com.studenttracking.studentservice.repository.GradeRepository;
 import com.studenttracking.studentservice.repository.StudentRepository;
 import lombok.RequiredArgsConstructor;
@@ -20,7 +21,7 @@ public class GradeService {
 
     public Grade addGrade(GradeRequest request) {
         studentRepository.findById(request.getStudentId())
-                .orElseThrow(() -> new RuntimeException("Student not found"));
+                .orElseThrow(() -> new BusinessException("Student not found"));
 
         Grade grade = Grade.builder()
                 .studentId(request.getStudentId())
@@ -35,7 +36,7 @@ public class GradeService {
 
     public List<Grade> getGradesByStudent(UUID studentId) {
         studentRepository.findById(studentId)
-                .orElseThrow(() -> new RuntimeException("Student not found"));
+                .orElseThrow(() -> new BusinessException("Student not found"));
         return gradeRepository.findByStudentId(studentId);
     }
 
@@ -50,14 +51,14 @@ public class GradeService {
 
     public Grade publishGrade(UUID gradeId) {
         Grade grade = gradeRepository.findById(gradeId)
-                .orElseThrow(() -> new RuntimeException("Grade not found"));
+                .orElseThrow(() -> new BusinessException("Grade not found"));
         grade.setPublishedAt(LocalDateTime.now());
         return gradeRepository.save(grade);
     }
 
     public Grade updateGrade(UUID gradeId, GradeRequest request) {
         Grade grade = gradeRepository.findById(gradeId)
-                .orElseThrow(() -> new RuntimeException("Grade not found"));
+                .orElseThrow(() -> new BusinessException("Grade not found"));
 
         grade.setSubject(request.getSubject());
         grade.setScore(request.getScore());
@@ -72,7 +73,7 @@ public class GradeService {
 
     public void deleteGrade(UUID gradeId) {
         gradeRepository.findById(gradeId)
-                .orElseThrow(() -> new RuntimeException("Grade not found"));
+                .orElseThrow(() -> new BusinessException("Grade not found"));
         gradeRepository.deleteById(gradeId);
     }
 }

@@ -47,7 +47,7 @@ public class EmailService {
                     .from(fromEmail)
                     .to(request.getTo())
                     .subject(request.getSubject())
-                    .html("<p>" + request.getBody() + "</p>")
+                    .html("<p>" + org.springframework.web.util.HtmlUtils.htmlEscape(request.getBody()) + "</p>")
                     .build();
 
             CreateEmailResponse response = resend.emails().send(options);

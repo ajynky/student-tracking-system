@@ -18,7 +18,7 @@ export default function AdminDashboard() {
     useEffect(() => {
         const fetchStats = async () => {
             const token = getToken();
-            if (!token) return;
+            if (!token) { setLoading(false); return; }
             try {
                 const [studentsRes, classesRes] = await Promise.all([
                     api.get('/students'),
@@ -37,11 +37,7 @@ export default function AdminDashboard() {
             }
         };
 
-        const timer = setTimeout(() => {
-            fetchStats();
-        }, 500);
-
-        return () => clearTimeout(timer);
+        fetchStats();
     }, []);
 
     return (
