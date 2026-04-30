@@ -20,7 +20,7 @@ jobs:
         id: extract
         run: |
           BRANCH="${{ github.event.ref }}"
-          ISSUE=$(echo $BRANCH | grep -oP '(?<=/)\d+' | head -1)
+          ISSUE=$(echo $BRANCH | grep -oP '(?<=issue-)\d+' | head -1)
           echo "issue=$ISSUE" >> $GITHUB_OUTPUT
       - name: Move issue to In Progress
         if: steps.extract.outputs.issue != ''

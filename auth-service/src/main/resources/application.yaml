@@ -23,7 +23,7 @@ server:
     enabled: true
     mime-types: application/json,text/plain
     min-response-size: 1024
-  port: ${PORT:9093}
+  port: ${PORT:8080}
 spring:
   application:
     name: auth-service

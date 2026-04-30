@@ -25,7 +25,7 @@ server:
     enabled: true
     mime-types: application/json,text/plain
     min-response-size: 1024
-  port: ${PORT:9092}
+  port: ${PORT:8080}
 services:
   notification-service: ${SERVICES_NOTIFICATION_SERVICE:http://localhost:9094}
 spring:
