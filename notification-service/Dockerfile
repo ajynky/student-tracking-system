@@ -33,4 +33,10 @@ COPY --from=builder /app/application/ ./
 
 USER appuser
 EXPOSE 8080
-ENTRYPOINT ["java", "-javaagent:/app/grafana-opentelemetry-java.jar", "org.springframework.boot.loader.launch.JarLauncher"]
+ENTRYPOINT ["java", \
+  "-XX:+UseContainerSupport", \
+  "-XX:MaxRAMPercentage=75.0", \
+  "-XX:+UseG1GC", \
+  "-XX:+ExitOnOutOfMemoryError", \
+  "-javaagent:/app/grafana-opentelemetry-java.jar", \
+  "org.springframework.boot.loader.launch.JarLauncher"]
