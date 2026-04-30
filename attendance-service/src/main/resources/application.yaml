@@ -31,6 +31,9 @@ services:
 spring:
   application:
     name: attendance-service
+  threads:
+    virtual:
+      enabled: true
   datasource:
     driver-class-name: org.postgresql.Driver
     hikari:
