@@ -13,7 +13,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.*;
-
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 @Service
 @RequiredArgsConstructor
 public class AttendanceService {
@@ -21,6 +22,7 @@ public class AttendanceService {
     private final AttendanceRepository attendanceRepository;
     private final NotificationClient notificationClient;
 
+    @CacheEvict(value = {"attendanceByStudent", "attendanceByClassDate", "attendancePercentage"}, allEntries = true)
     public Attendance markAttendance(AttendanceRequest request) {
 
         attendanceRepository.findByStudentIdAndClassIdAndDate(
@@ -43,15 +45,6 @@ public class AttendanceService {
 
         Attendance saved = attendanceRepository.save(attendance);
 
-        // Trigger SMS if student is ABSENT
-		/*
-		 * if (saved.getStatus() == AttendanceStatus.ABSENT) { if
-		 * (request.getPhoneNumber() != null && !request.getPhoneNumber().isEmpty()) {
-		 * notificationClient.sendAbsenceSms( request.getStudentId(),
-		 * request.getPhoneNumber(), request.getStudentName() != null ?
-		 * request.getStudentName() : "Student", request.getDate().toString() ); } }
-		 */
-        
         if (saved.getStatus() == AttendanceStatus.ABSENT) {
             if (request.getPhoneNumber() != null
                     && !request.getPhoneNumber().isEmpty()) {
@@ -70,6 +63,7 @@ public class AttendanceService {
     }
 
     @Transactional
+    @CacheEvict(value = {"attendanceByStudent", "attendanceByClassDate", "attendancePercentage"}, allEntries = true)
     public List<Attendance> markBulkAttendance(BulkAttendanceRequest request) {
         List<Attendance> saved = new ArrayList<>();
 
@@ -115,10 +109,12 @@ public class AttendanceService {
     }
 
     // existing query methods stay the same
+    @Cacheable(value = "attendanceByStudent", key = "#studentId")
     public List<Attendance> getAttendanceByStudent(UUID studentId) {
         return attendanceRepository.findByStudentId(studentId);
     }
 
+    @Cacheable(value = "attendanceByClassDate", key = "#classId + '-' + #date")
     public List<Attendance> getAttendanceByClassAndDate(
             UUID classId, LocalDate date) {
         return attendanceRepository.findByClassIdAndDate(classId, date);
@@ -136,6 +132,7 @@ public class AttendanceService {
                 studentId, from, to);
     }
 
+    @Cacheable(value = "attendancePercentage", key = "#studentId + '-' + #classId")
     public Map<String, Object> getAttendancePercentage(
             UUID studentId, UUID classId) {
         long total = attendanceRepository

@@ -11,7 +11,8 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.UUID;
-
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 @Service
 @RequiredArgsConstructor
 public class StudentService {
@@ -35,20 +36,24 @@ public class StudentService {
         return studentRepository.findAll(pageable);
     }
 
+    @Cacheable(value = "studentById", key = "#id")
     public Student getStudentById(UUID id) {
         return studentRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Student not found"));
     }
 
+    @Cacheable(value = "studentByUserId", key = "#userId")
     public Student getStudentByUserId(UUID userId) {
         return studentRepository.findByUserId(userId)
                 .orElseThrow(() -> new RuntimeException("Student not found"));
     }
 
+    @Cacheable(value = "studentsByClass", key = "#classId")
     public List<Student> getStudentsByClass(UUID classId) {
         return studentRepository.findByClassId(classId);
     }
 
+    @CacheEvict(value = {"studentById", "studentByUserId", "studentsByClass"}, allEntries = true)
     public Student updateStudent(UUID id, StudentRequest request) {
         Student existing = getStudentById(id);
         existing.setName(request.getName());
@@ -56,6 +61,7 @@ public class StudentService {
         return studentRepository.save(existing);
     }
 
+    @CacheEvict(value = {"studentById", "studentByUserId", "studentsByClass"}, allEntries = true)
     public void deleteStudent(UUID id) {
         studentRepository.deleteById(id);
     }

@@ -13,6 +13,7 @@ management:
           - info
           - metrics
           - prometheus
+          - caches
   servlet:
     multipart:
       max-file-size: 10MB
@@ -35,6 +36,10 @@ services:
 spring:
   application:
     name: student-service
+  cache:
+    caffeine:
+      spec: maximumSize=500,expireAfterWrite=300s
+    type: caffeine
   datasource:
     driver-class-name: org.postgresql.Driver
     hikari:
