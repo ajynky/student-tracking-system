@@ -52,7 +52,7 @@ jobs:
             -Dsonar.host.url=https://sonarcloud.io \
             -Dsonar.token=$SONAR_TOKEN \
             -Dsonar.organization=ajynky \
-            -Dsonar.projectKey=ajynky_student-tracking-system_${{ matrix.service }}
+            -Dsonar.projectKey=ajynky_student-tracking-system_${{ matrix.service }} \
             -Dsonar.java.binaries=target/classes
 
       - name: Set up Docker Buildx
