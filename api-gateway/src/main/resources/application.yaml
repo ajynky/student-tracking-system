@@ -16,6 +16,9 @@ management:
   health:
     defaults:
       enabled: true
+otel:
+  service:
+    name: ${spring.application.name}
 sentry:
   dsn: ${SENTRY_DSN}
   enabled: ${SENTRY_ENABLED:false}
@@ -25,16 +28,6 @@ server:
 spring:
   application:
     name: api-gateway
-  management:
-    tracing:
-      sampling:
-        probability: 1
-  logging:
-    pattern:
-      level: '%5p [${spring.application.name:},%X{traceId:-},%X{spanId:-}]'
-  threads:
-    virtual:
-      enabled: true
   cloud:
     gateway:
       server:
@@ -109,3 +102,13 @@ spring:
               predicates:
                 - Path=/notifications/**
               uri: ${SERVICES_NOTIFICATION_SERVICE:http://localhost:9094}
+  logging:
+    pattern:
+      level: '%5p [${spring.application.name:},%X{traceId:-},%X{spanId:-}]'
+  management:
+    tracing:
+      sampling:
+        probability: 1
+  threads:
+    virtual:
+      enabled: true

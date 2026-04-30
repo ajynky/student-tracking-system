@@ -11,6 +11,9 @@ management:
           - info
           - metrics
           - prometheus
+otel:
+  service:
+    name: ${spring.application.name}
 resend:
   api-key: ${RESEND_API_KEY}
   from-email: ${RESEND_FROM_EMAIL}
@@ -27,16 +30,6 @@ server:
 spring:
   application:
     name: notification-service
-  management:
-    tracing:
-      sampling:
-        probability: 1
-  logging:
-    pattern:
-      level: '%5p [${spring.application.name:},%X{traceId:-},%X{spanId:-}]'
-  threads:
-    virtual:
-      enabled: true
   datasource:
     driver-class-name: org.postgresql.Driver
     hikari:
@@ -53,6 +46,16 @@ spring:
       ddl-auto: none
     open-in-view: false
     show-sql: false
+  logging:
+    pattern:
+      level: '%5p [${spring.application.name:},%X{traceId:-},%X{spanId:-}]'
+  management:
+    tracing:
+      sampling:
+        probability: 1
+  threads:
+    virtual:
+      enabled: true
 twilio:
   account-sid: ${TWILIO_ACCOUNT_SID}
   auth-token: ${TWILIO_AUTH_TOKEN}

@@ -17,6 +17,9 @@ management:
     multipart:
       max-file-size: 10MB
       max-request-size: 10MB
+otel:
+  service:
+    name: ${spring.application.name}
 sentry:
   dsn: ${SENTRY_DSN}
   enabled: ${SENTRY_ENABLED:false}
@@ -32,16 +35,6 @@ services:
 spring:
   application:
     name: student-service
-  management:
-    tracing:
-      sampling:
-        probability: 1
-  logging:
-    pattern:
-      level: '%5p [${spring.application.name:},%X{traceId:-},%X{spanId:-}]'
-  threads:
-    virtual:
-      enabled: true
   datasource:
     driver-class-name: org.postgresql.Driver
     hikari:
@@ -58,6 +51,16 @@ spring:
       ddl-auto: none
     open-in-view: false
     show-sql: false
+  logging:
+    pattern:
+      level: '%5p [${spring.application.name:},%X{traceId:-},%X{spanId:-}]'
+  management:
+    tracing:
+      sampling:
+        probability: 1
+  threads:
+    virtual:
+      enabled: true
 supabase:
   service-role-key: ${SUPABASE_SERVICE_ROLE_KEY}
   storage:

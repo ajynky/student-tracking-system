@@ -20,6 +20,11 @@ WORKDIR /app
 # Add non-root user for security
 RUN addgroup -S appgroup && adduser -S appuser -G appgroup
 
+# Download Grafana OpenTelemetry Java agent
+RUN apk add --no-cache curl && \
+    curl -L https://github.com/grafana/grafana-opentelemetry-java/releases/latest/download/grafana-opentelemetry-java.jar \
+    -o /app/grafana-opentelemetry-java.jar
+
 # Copy layers in order of least → most likely to change
 COPY --from=builder /app/dependencies/ ./
 COPY --from=builder /app/spring-boot-loader/ ./
@@ -28,7 +33,7 @@ COPY --from=builder /app/application/ ./
 
 USER appuser
 EXPOSE 8080
-ENTRYPOINT ["java", "org.springframework.boot.loader.launch.JarLauncher"]
+ENTRYPOINT ["java", "-javaagent:/app/grafana-opentelemetry-java.jar", "org.springframework.boot.loader.launch.JarLauncher"]
 
 # # Stage 1 — Build
 # FROM eclipse-temurin:21-jdk-alpine AS builder
