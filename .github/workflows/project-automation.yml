@@ -141,7 +141,7 @@ jobs:
 
             const statusField = project.fields.nodes.find(f => f.name === 'Status');
 
-            const inReviewOption = statusField.options.find(o => o.name === 'In Review');
+            const inReviewOption = statusField.options.find(o => o.name === 'Review');
 
 
             const itemsQuery = await github.graphql(`
