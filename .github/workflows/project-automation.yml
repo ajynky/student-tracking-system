@@ -96,7 +96,7 @@ jobs:
               }
             `);
   move-to-in-review:
-    if: github.event_name == 'pull_request' && github.event.action == 'opened'
+    if: github.event_name == 'pull_request' && github.event.action == 'opened' && github.actor != 'dependabot[bot]'
     runs-on: ubuntu-latest
     steps:
       - name: Move linked issue to In Review
