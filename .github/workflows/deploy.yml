@@ -36,7 +36,11 @@ jobs:
         with:
           java-version: '21'
           distribution: 'temurin'
-          cache: 'maven'                # caches ~/.m2 between runs
+          cache: 'maven' # caches ~/.m2 between runs
+
+      - name: Build Maven
+        working-directory: ${{ matrix.service }}
+        run: mvn clean package -DskipTests -q                
 
       # Analyze code quality and security with SonarCloud
       - name: SonarCloud Scan
@@ -49,7 +53,7 @@ jobs:
             -Dsonar.token=$SONAR_TOKEN \
             -Dsonar.organization=ajynky \
             -Dsonar.projectKey=ajynky_student-tracking-system_${{ matrix.service }}
-            -Dsonar.java.binaries
+            -Dsonar.java.binaries=target/classes
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
