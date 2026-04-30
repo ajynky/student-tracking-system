@@ -27,6 +27,13 @@ server:
 spring:
   application:
     name: auth-service
+  management:
+    tracing:
+      sampling:
+        probability: 1
+  logging:
+    pattern:
+      level: '%5p [${spring.application.name:},%X{traceId:-},%X{spanId:-}]'
   threads:
     virtual:
       enabled: true
