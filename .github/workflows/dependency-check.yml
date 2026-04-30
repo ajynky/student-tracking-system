@@ -1,0 +1,81 @@
+name: Dependency Check
+
+on:
+  schedule:
+    - cron: '0 9 * * 1'  # Every Monday 9am
+  workflow_dispatch:      # Manual trigger for testing
+
+jobs:
+  check-dependencies:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        service: [api-gateway, auth-service, student-service, attendance-service, notification-service]
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-java@v4
+        with:
+          java-version: '21'
+          distribution: 'temurin'
+          cache: 'maven'
+
+      - name: Check outdated dependencies
+        id: check
+        working-directory: ${{ matrix.service }}
+        run: |
+          mvn versions:display-dependency-updates -q 2>/dev/null \
+            | grep '\->' \
+            | sed 's/.*\[INFO\] //' \
+            > outdated.txt
+          cat outdated.txt
+
+      - name: Create issues for outdated dependencies
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.PROJECT_TOKEN }}
+          script: |
+            const fs = require('fs');
+            const service = '${{ matrix.service }}';
+            const filePath = `${service}/outdated.txt`;
+            
+            if (!fs.existsSync(filePath)) return;
+            
+            const lines = fs.readFileSync(filePath, 'utf8')
+              .split('\n')
+              .filter(l => l.includes('->'));
+            
+            for (const line of lines) {
+              const title = `[Dependency] ${service}: ${line.trim()}`;
+              
+              // Skip if issue already exists
+              const existing = await github.rest.issues.listForRepo({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                state: 'open',
+                labels: 'dependencies',
+                per_page: 100
+              });
+              
+              if (existing.data.find(i => i.title === title)) continue;
+              
+              await github.rest.issues.create({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                title,
+                body: [
+                  `## Outdated Dependency`,
+                  `**Service:** ${service}`,
+                  `**Update:** ${line.trim()}`,
+                  ``,
+                  `## Steps to resolve`,
+                  `- [ ] Review changelog for breaking changes`,
+                  `- [ ] Update version in \`${service}/pom.xml\``,
+                  `- [ ] Test locally`,
+                  `- [ ] Deploy and verify`,
+                  ``,
+                  `> Auto-created by weekly dependency check. Handle in hardening sprint.`
+                ].join('\n'),
+                labels: ['dependencies', 'hardening-sprint']
+              });
+            }
