@@ -49,6 +49,7 @@ jobs:
             -Dsonar.token=$SONAR_TOKEN \
             -Dsonar.organization=ajynky \
             -Dsonar.projectKey=ajynky_student-tracking-system_${{ matrix.service }}
+            -Dsonar.java.binaries
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
