@@ -14,6 +14,9 @@ management:
           - info
           - metrics
           - prometheus
+otel:
+  service:
+    name: ${spring.application.name}
 sentry:
   dsn: ${SENTRY_DSN}
   enabled: ${SENTRY_ENABLED:false}
@@ -27,16 +30,6 @@ server:
 spring:
   application:
     name: auth-service
-  management:
-    tracing:
-      sampling:
-        probability: 1
-  logging:
-    pattern:
-      level: '%5p [${spring.application.name:},%X{traceId:-},%X{spanId:-}]'
-  threads:
-    virtual:
-      enabled: true
   datasource:
     driver-class-name: org.postgresql.Driver
     hikari:
@@ -53,3 +46,13 @@ spring:
       ddl-auto: none
     open-in-view: false
     show-sql: false
+  logging:
+    pattern:
+      level: '%5p [${spring.application.name:},%X{traceId:-},%X{spanId:-}]'
+  management:
+    tracing:
+      sampling:
+        probability: 1
+  threads:
+    virtual:
+      enabled: true
