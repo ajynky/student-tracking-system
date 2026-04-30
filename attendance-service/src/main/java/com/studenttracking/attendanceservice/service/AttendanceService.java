@@ -1,5 +1,15 @@
 package com.studenttracking.attendanceservice.service;
 
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
+
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import com.studenttracking.attendanceservice.client.NotificationClient;
 import com.studenttracking.attendanceservice.dto.AttendanceRequest;
 import com.studenttracking.attendanceservice.dto.BulkAttendanceRequest;
@@ -7,14 +17,8 @@ import com.studenttracking.attendanceservice.entity.Attendance;
 import com.studenttracking.attendanceservice.enums.AttendanceStatus;
 import com.studenttracking.attendanceservice.exception.BusinessException;
 import com.studenttracking.attendanceservice.repository.AttendanceRepository;
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDate;
-import java.util.*;
-import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.cache.annotation.Cacheable;
+import lombok.RequiredArgsConstructor;
 @Service
 @RequiredArgsConstructor
 public class AttendanceService {
@@ -22,7 +26,7 @@ public class AttendanceService {
     private final AttendanceRepository attendanceRepository;
     private final NotificationClient notificationClient;
 
-    @CacheEvict(value = {"attendanceByStudent", "attendanceByClassDate", "attendancePercentage"}, allEntries = true)
+//    @CacheEvict(value = {"attendanceByStudent", "attendanceByClassDate", "attendancePercentage"}, allEntries = true)
     public Attendance markAttendance(AttendanceRequest request) {
 
         attendanceRepository.findByStudentIdAndClassIdAndDate(
@@ -63,7 +67,7 @@ public class AttendanceService {
     }
 
     @Transactional
-    @CacheEvict(value = {"attendanceByStudent", "attendanceByClassDate", "attendancePercentage"}, allEntries = true)
+//    @CacheEvict(value = {"attendanceByStudent", "attendanceByClassDate", "attendancePercentage"}, allEntries = true)
     public List<Attendance> markBulkAttendance(BulkAttendanceRequest request) {
         List<Attendance> saved = new ArrayList<>();
 
@@ -109,12 +113,12 @@ public class AttendanceService {
     }
 
     // existing query methods stay the same
-    @Cacheable(value = "attendanceByStudent", key = "#studentId")
+//    @Cacheable(value = "attendanceByStudent", key = "#studentId")
     public List<Attendance> getAttendanceByStudent(UUID studentId) {
         return attendanceRepository.findByStudentId(studentId);
     }
 
-    @Cacheable(value = "attendanceByClassDate", key = "#classId + '-' + #date")
+//    @Cacheable(value = "attendanceByClassDate", key = "#classId + '-' + #date")
     public List<Attendance> getAttendanceByClassAndDate(
             UUID classId, LocalDate date) {
         return attendanceRepository.findByClassIdAndDate(classId, date);
@@ -132,7 +136,7 @@ public class AttendanceService {
                 studentId, from, to);
     }
 
-    @Cacheable(value = "attendancePercentage", key = "#studentId + '-' + #classId")
+//    @Cacheable(value = "attendancePercentage", key = "#studentId + '-' + #classId")
     public Map<String, Object> getAttendancePercentage(
             UUID studentId, UUID classId) {
         long total = attendanceRepository
