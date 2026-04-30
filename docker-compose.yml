@@ -4,7 +4,7 @@ services:
   api-gateway:
     build: ./api-gateway
     ports:
-      - "9091:9091"
+      - "9091:8080"
     environment:
       - SERVICES_AUTH_SERVICE=http://auth-service:9093
       - SERVICES_STUDENT_SERVICE=http://student-service:9095
@@ -22,7 +22,7 @@ services:
   auth-service:
     build: ./auth-service
     ports:
-      - "9093:9093"
+      - "9093:8080"
     environment:
       - SPRING_DATASOURCE_URL=${SPRING_DATASOURCE_URL}
       - SPRING_DATASOURCE_USERNAME=${SPRING_DATASOURCE_USERNAME}
@@ -35,7 +35,7 @@ services:
   student-service:
     build: ./student-service
     ports:
-      - "9095:9095"
+      - "9095:8080"
     environment:
       - SPRING_DATASOURCE_URL=${SPRING_DATASOURCE_URL}
       - SPRING_DATASOURCE_USERNAME=${SPRING_DATASOURCE_USERNAME}
@@ -50,7 +50,7 @@ services:
   attendance-service:
     build: ./attendance-service
     ports:
-      - "9092:9092"
+      - "9092:8080"
     environment:
       - SPRING_DATASOURCE_URL=${SPRING_DATASOURCE_URL}
       - SPRING_DATASOURCE_USERNAME=${SPRING_DATASOURCE_USERNAME}
@@ -63,7 +63,7 @@ services:
   notification-service:
     build: ./notification-service
     ports:
-      - "9094:9094"
+      - "9094:8080"
     environment:
       - SPRING_DATASOURCE_URL=${SPRING_DATASOURCE_URL}
       - SPRING_DATASOURCE_USERNAME=${SPRING_DATASOURCE_USERNAME}
