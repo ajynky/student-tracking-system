@@ -57,3 +57,72 @@ jobs:
           cache-from: type=gha,scope=${{ matrix.service }}   # reuse cached layers
           cache-to: type=gha,mode=max,scope=${{ matrix.service }}
 
+      - name: Run Trivy vulnerability scan
+        uses: aquasecurity/trivy-action@master
+        with:
+          image-ref: ghcr.io/${{ github.repository_owner }}/${{ matrix.service }}:latest
+          format: json
+          output: trivy-results-${{ matrix.service }}.json
+          severity: CRITICAL,HIGH
+          exit-code: 0
+
+      - name: Create GitHub issues for vulnerabilities
+        if: always()
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.PROJECT_TOKEN }}
+          script: |
+            const fs = require('fs');
+            const service = '${{ matrix.service }}';
+            const resultsFile = `trivy-results-${service}.json`;
+
+            if (!fs.existsSync(resultsFile)) return;
+
+            const results = JSON.parse(fs.readFileSync(resultsFile, 'utf8'));
+            if (!results.Results) return;
+
+            for (const result of results.Results) {
+              if (!result.Vulnerabilities) continue;
+
+              for (const vuln of result.Vulnerabilities) {
+                const title = `[Security] ${vuln.VulnerabilityID} in ${service} - ${vuln.PkgName}`;
+
+                // Check for duplicate issue
+                const existing = await github.rest.issues.listForRepo({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  state: 'open',
+                  labels: 'trivy',
+                  per_page: 100
+                });
+
+                const duplicate = existing.data.find(i => i.title === title);
+                if (duplicate) continue;
+
+                const severity = vuln.Severity.toLowerCase();
+                const labels = ['security', 'vulnerability', 'trivy', severity];
+
+                const body = [
+                  `## Vulnerability Found by Trivy`,
+                  `**Service:** ${service}`,
+                  `**CVE ID:** ${vuln.VulnerabilityID}`,
+                  `**Package:** ${vuln.PkgName}`,
+                  `**Installed Version:** ${vuln.InstalledVersion}`,
+                  `**Fixed Version:** ${vuln.FixedVersion || 'No fix available'}`,
+                  `**Severity:** ${vuln.Severity}`,
+                  `**Description:** ${vuln.Description || 'N/A'}`,
+                  `**Reference:** ${vuln.PrimaryURL || 'N/A'}`,
+                  ``,
+                  `> Auto-created by Trivy scan on deploy. Fix in hardening sprint.`
+                ].join('\n');
+
+                await github.rest.issues.create({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  title,
+                  body,
+                  labels
+                });
+              }
+            }
+
