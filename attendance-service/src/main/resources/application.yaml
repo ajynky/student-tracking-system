@@ -38,10 +38,12 @@ spring:
     driver-class-name: org.postgresql.Driver
     hikari:
       connection-timeout: 20000
-      data-source-properties:
-        prepareThreshold: 0
+      idle-timeout: 300000
+      leak-detection-threshold: 60000
+      max-lifetime: 600000
       maximum-pool-size: 5
       minimum-idle: 2
+      pool-name: ${spring.application.name}-pool
     password: ${SPRING_DATASOURCE_PASSWORD}
     url: ${SPRING_DATASOURCE_URL}
     username: ${SPRING_DATASOURCE_USERNAME}

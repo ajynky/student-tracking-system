@@ -33,7 +33,13 @@ COPY --from=builder /app/application/ ./
 
 USER appuser
 EXPOSE 8080
-ENTRYPOINT ["java", "-javaagent:/app/grafana-opentelemetry-java.jar", "org.springframework.boot.loader.launch.JarLauncher"]
+ENTRYPOINT ["java", \
+  "-XX:+UseContainerSupport", \
+  "-XX:MaxRAMPercentage=75.0", \
+  "-XX:+UseG1GC", \
+  "-XX:+ExitOnOutOfMemoryError", \
+  "-javaagent:/app/grafana-opentelemetry-java.jar", \
+  "org.springframework.boot.loader.launch.JarLauncher"]
 
 # # Stage 1 — Build
 # FROM eclipse-temurin:21-jdk-alpine AS builder
