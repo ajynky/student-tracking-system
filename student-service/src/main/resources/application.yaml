@@ -36,9 +36,9 @@ services:
 spring:
   application:
     name: student-service
-  cache:
-    caffeine:
-      spec: maximumSize=500,expireAfterWrite=300s
+#  cache:
+#    caffeine:
+#      spec: maximumSize=500,expireAfterWrite=300s
     type: caffeine
   datasource:
     driver-class-name: org.postgresql.Driver

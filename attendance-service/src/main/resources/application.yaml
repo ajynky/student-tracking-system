@@ -35,10 +35,10 @@ services:
 spring:
   application:
     name: attendance-service
-  cache:
-    type: caffeine
-    caffeine:
-      spec: maximumSize=500,expireAfterWrite=300s
+#  cache:
+#    type: caffeine
+#    caffeine:
+#      spec: maximumSize=500,expireAfterWrite=300s
   datasource:
     driver-class-name: org.postgresql.Driver
     hikari:
