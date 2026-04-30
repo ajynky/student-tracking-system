@@ -20,7 +20,7 @@ jobs:
         id: extract
         run: |
           BRANCH="${{ github.event.ref }}"
-          ISSUE=$(echo $BRANCH | grep -oP '(?<=/)\d+' | head -1)
+          ISSUE=$(echo $BRANCH | grep -oP '(?<=issue-)\d+' | head -1)
           echo "issue=$ISSUE" >> $GITHUB_OUTPUT
       - name: Move issue to In Progress
         if: steps.extract.outputs.issue != ''
@@ -141,7 +141,7 @@ jobs:
 
             const statusField = project.fields.nodes.find(f => f.name === 'Status');
 
-            const inReviewOption = statusField.options.find(o => o.name === 'In Review');
+            const inReviewOption = statusField.options.find(o => o.name === 'Review');
 
 
             const itemsQuery = await github.graphql(`
