@@ -50,7 +50,7 @@ spring:
       minimum-idle: 2
       pool-name: ${spring.application.name}-pool
     password: ${SPRING_DATASOURCE_PASSWORD}
-    url: ${SPRING_DATASOURCE_URL}
+    url: ${SPRING_DATASOURCE_URL}?prepareThreshold=0
     username: ${SPRING_DATASOURCE_USERNAME}
   jpa:
     hibernate:
